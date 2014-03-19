@@ -3,7 +3,7 @@
 #include <signal.h>
 #include <time.h>
 #include <assert.h>
-#include "Utility.h"
+#include "read_file.h"
 // define your own colors: the numbers correspond to the colors defined
 // in the terminal configuration
 #define COLOR_BACKGROUND 0
@@ -87,7 +87,6 @@ int main(int argc, char *argv[])
       while((c=getch())!='b'){
       	cursorX=getcurx(map_win);
       	cursorY=getcury(map_win);
-        
       	switch(c){
       		case ' ':
               wmove(map_win,cursorY,cursorX);;
