@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 							printw(map_name);
 							refresh();
 							if(strlen(map_name)!=0 && strlen(author)==0){
-								write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
+								//write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
 								wprintw(command_window,"successfully write to ");
 								wprintw(command_window, map_name);
 							}else {
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 							getch();
 							stop_command_window(command_window, game_window,map_row,map_col);
 						}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
-							write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
+							//write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
 							wprintw(command_window,"sucessfully write to ");
 							wprintw(command_window, str_recieve[1]);
 							wrefresh(command_window);
@@ -116,14 +116,14 @@ int main(int argc, char *argv[])
 							wprintw(command_window,"write to this file ");
 							wprintw(command_window, map_name);
 							wprintw(command_window,"and will quit");
-							write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
+							//write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
 							wrefresh(command_window);
 							getch();
 							//stop_command_window(command_window, game_window,map_row,map_col);
 							endwin();
 							return 0;
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
-							write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
+							//write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
 							wprintw(command_window,"sucessfully write to ");
 							wprintw(command_window, str_recieve[1]);
 							wprintw(command_window, " and will quit");
