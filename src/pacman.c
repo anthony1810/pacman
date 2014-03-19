@@ -41,18 +41,21 @@ int main(int argc, char *argv[])
 {
     init_screen();
     int ch;
-    int map_row=0;
-    int map_col=0;
     int isEnter=0;
 	int input;
+
+	char author[100];
+	char map_name[50];
+	char author_email[100];
+	int map_row=0;
+    int map_col=0;
+
 	const char s[2] = " ";
     while((ch = getch()) != KEY_F(1))
 	{	switch(ch)
 		{	
 			case ':':
-
-				//start_command_window(command_window, COMMAND_STARTY);
-				
+				start_command_window(command_window, COMMAND_STARTY);			
 				while((input = getch())!=27){
 					isEnter = 0;
 					start_command_window(command_window, COMMAND_STARTY);
@@ -73,7 +76,7 @@ int main(int argc, char *argv[])
 
 						if(strlen(commands)!=0){
 						char *token;
-						char *str_recieve[3];
+						char *str_recieve[4];
 									   
 						/* get the first token */
 						token = strtok(commands, s);
@@ -90,57 +93,76 @@ int main(int argc, char *argv[])
 							endwin();			/* End curses mode		  */
 							//return 0;
 						}else if(strcmp(commands,"w")==0 && str_recieve[1]== NULL){
-							wprintw(command_window,"write to this file ");
+							printw(map_name);
+							refresh();
+							if(strlen(map_name)!=0 && strlen(author)==0){
+								write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
+								wprintw(command_window,"successfully write to ");
+								wprintw(command_window, map_name);
+							}else {
+								wprintw(command_window, "No file to write to!");
+							}
 							wrefresh(command_window);
 							getch();
-							start_command_window(command_window, COMMAND_STARTY);
+							stop_command_window(command_window, game_window,map_row,map_col);
 						}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
+							write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
 							wprintw(command_window,"sucessfully write to ");
 							wprintw(command_window, str_recieve[1]);
 							wrefresh(command_window);
 							getch();
-							start_command_window(command_window, COMMAND_STARTY);
+							stop_command_window(command_window, game_window,map_row,map_col);
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]== NULL){
-							wprintw(command_window,"write to this file and will quit");
+							wprintw(command_window,"write to this file ");
+							wprintw(command_window, map_name);
+							wprintw(command_window,"and will quit");
+							write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
 							wrefresh(command_window);
 							getch();
-							stop_command_window(command_window, game_window,map_row,map_col);
+							//stop_command_window(command_window, game_window,map_row,map_col);
+							endwin();
+							return 0;
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
+							write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
 							wprintw(command_window,"sucessfully write to ");
 							wprintw(command_window, str_recieve[1]);
 							wprintw(command_window, " and will quit");
 							wrefresh(command_window);
 							getch();
-							stop_command_window(command_window,game_window, map_row,map_col);
+							//stop_command_window(command_window,game_window, map_row,map_col);
+							endwin();			/* End curses mode		  */
+							return 0;
 						}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
 							char s[100];
-							FILE *f = fopen("../levels/level1.pac", "r");
+							FILE *f ;
+						    char path[] = "../levels/";
+						    char extension[] =".pac";
+						    str_combine(path,str_recieve[1]);
+						    str_combine(path,extension);
+						    f = fopen(path, "r");
 							if(!f){
 								fprintf(stderr, "can't" );
 							}
 						    fgets(s, 100, f);
-						    //memcpy(author, s, 100);
+						    memcpy(author, s, 100);
 						    fgets(s, 100, f);
-						    //memcpy(map_name, s, 100);
+						    memcpy(map_name, s, 100);
 						    fgets(s, 100, f);
 						    map_row=atoi(s);
 						    fgets(s, 100, f);
 						    map_col=atoi(s)+1;
 						    //4 is the right
 						    char map[map_row][map_col];
-						   	readFile(game_window,map_row,map_col,map,s);
+						   	readFile(game_window,map_row,map_col,map,s,str_recieve[1]);
 						    fclose(f);
-						    
-
-
-							wprintw(command_window,"sucessfully read from ");
+						    wprintw(command_window,"sucessfully read from ");
 							wprintw(command_window, str_recieve[1]);
 							wrefresh(command_window);
 							getch();
-							start_command_window(command_window, COMMAND_STARTY);
-							wmove(game_window, map_row-1, map_col-2);
-							refresh();
-							wrefresh(game_window);
+							isEnter = 0;
+							stop_command_window(command_window,game_window, map_row, map_col);	
+						    cursorMove(game_window,map_row,map_col,map);					
+							break;
 						}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 							&& str_recieve[2] != NULL && str_recieve[3] != NULL){
 							int height = atoi(str_recieve[2]);
@@ -157,16 +179,22 @@ int main(int argc, char *argv[])
 							wrefresh(command_window);
 							getch();
 							isEnter = 0;
-							start_command_window(command_window, COMMAND_STARTY);
+							stop_command_window(command_window,game_window, map_row, map_col);
 						}
 					}
 					}
 				}
 				isEnter = 0;
-				stop_command_window(command_window,game_window, map_row, map_col);
+				start_command_window(command_window, COMMAND_STARTY);
 				refresh();
 				noecho();
 				break;
+
+		
+
+		default:
+			stop_command_window(command_window,game_window, map_row, map_col);
+			break;
 		}
 	}
 		

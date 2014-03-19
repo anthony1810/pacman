@@ -5,6 +5,5 @@ void start_command_window(WINDOW *command_win,int y_cor);
 
 void stop_command_window(WINDOW *command_win,WINDOW *game_window, int y_cor, int x_cor);
 
-void command_loop(WINDOW *command_win,int starty);
 
 #endif

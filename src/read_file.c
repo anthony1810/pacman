@@ -4,6 +4,7 @@
 #include <time.h>
 #include <assert.h>
 #include "read_file.h"
+#include "write_file.h"
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {	WINDOW *local_win;
 
@@ -15,9 +16,14 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 
 	return local_win;
 }
-void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
+void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char file_name[]){
 
-    FILE *f = fopen("../levels/level1.pac", "r");
+    FILE *f ;
+    char path[] = "../levels/";
+    char extension[] =".pac";
+    str_combine(path,file_name);
+    str_combine(path,extension);
+    f = fopen(path, "r");
     if (!f) {
         fprintf(stderr, "Cannot open the file!\n");
     }
@@ -25,13 +31,9 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
     int r=0;int c=0;
     //print Author info, map info, row ,column 
     fgets(s, 100, f);
-    addstr(s);
     fgets(s, 100, f);
-    addstr(s);
     fgets(s, 100, f);
-    addstr(s);
     fgets(s, 100, f);
-    addstr(s);
 
     do{
         ch=fgetc(f);
@@ -123,6 +125,8 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
                 c++;
 				wattron(map_win,COLOR_PAIR(1));                   	
 				break;
+            case ':':
+                break;
         }
     }while(ch!=EOF);
     //move the cursor to the lower right of the map 
@@ -205,5 +209,61 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
     wmove(map_win,cursorY,cursorX);
 	refresh();
     wrefresh(map_win);
-
 }
+void cursorMove(WINDOW *game_window,int map_row,int map_col,char map[map_row][map_col]){
+
+    int c;
+                            int cursorX;
+                            int cursorY;
+
+                            while((c=getch())!=':'){
+                                cursorX=getcurx(game_window);
+                                cursorY=getcury(game_window);
+                                switch(c){
+                                    case ' ':
+                                        wmove(game_window,cursorY,cursorX);;
+                                        map[getcury(game_window)][getcurx(game_window)]=c;
+                                        updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
+                                        break;
+                                    case KEY_UP:
+                                         wmove(game_window,--cursorY,cursorX);
+                                         break; 
+                                    case KEY_DOWN:
+                                        cursorY= (cursorY==map_row-1) ? map_row-1 : cursorY+1;
+                                        wmove(game_window,cursorY,cursorX);                     
+                                        break;
+                                    case KEY_LEFT:
+                                        wmove(game_window,cursorY,--cursorX);          
+                                        break;
+                                    case KEY_RIGHT:
+                                        cursorX= (cursorX==map_col-2) ? map_col-2 : cursorX+1;
+                                        wmove(game_window,cursorY,cursorX);
+                                        break;
+                                      case 'q':
+                                      case 'Q':
+                                      case 'E':
+                                      case 'e':
+                                      case 'w':
+                                      case 'W':
+                                      case 'a':
+                                      case 'A':
+                                      case 's':
+                                      case 'S':
+                                      case 'd':
+                                      case 'D':
+                                      case 'z':
+                                      case 'Z':
+                                      case 'x':
+                                      case 'X':
+                                      case 'c':
+                                      case 'C':
+                                      case 'G':
+                                      case 'P':
+                                        map[getcury(game_window)][getcurx(game_window)]=c;
+                                        updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
+                                        break;
+                                    }
+                                    wrefresh(game_window);
+                                }
+}
+

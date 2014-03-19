@@ -6,10 +6,10 @@
 #include "read_file.h"
 
 void start_command_window(WINDOW *command_win,int y_cor){
+	cbreak();
 	wclear(command_win);
 	waddch(command_win,':');
 	wprintw(command_win, "Commands enabled..type enter to begin!");
-	noecho();
 	move(y_cor,1);
 	refresh();
 	wrefresh(command_win);
@@ -21,10 +21,7 @@ void stop_command_window(WINDOW *command_win,WINDOW *game_window, int y_cor, int
 	wmove(game_window,y_cor-1,x_cor-2);
 	refresh();
 	wrefresh(game_window);
-}
-
-void command_loop(WINDOW *command_win, int starty){
-	
+	noecho();
 }
 
 
