@@ -77,7 +77,8 @@ int main(int argc, char *argv[])
     row=atoi(s);
     fgets(s, 100, f);
     col=atoi(s)+1;
-    map_win = create_newwin(row, col, 4, 0);
+    //4 is the right
+    map_win = create_newwin(35, 65, 5, 0);
     char map[row][col];
    	readFile(map_win,row,col,map,s);
     fclose(f);
@@ -86,45 +87,47 @@ int main(int argc, char *argv[])
       while((c=getch())!='b'){
       	cursorX=getcurx(map_win);
       	cursorY=getcury(map_win);
+        
       	switch(c){
       		case ' ':
-              waddch(map_win,' ');
-              // wmove(map_win,cursorY,--cursorX);
+              wmove(map_win,cursorY,cursorX);;
               map[getcury(map_win)][getcurx(map_win)]=c;
               updateMap(map_win,row,col,map,cursorY,cursorX);
      	 			break;
-     	 	case KEY_UP:
-     	 			wmove(map_win,--cursorY,cursorX);
-     	 			break;	
-				case KEY_DOWN:
-					wmove(map_win,++cursorY,cursorX);     	 			
-					break;
-				case KEY_LEFT:
-					wmove(map_win,cursorY,--cursorX);
-					break;
-				case KEY_RIGHT:
-					wmove(map_win,cursorY,++cursorX);
-					break;
-				case 'q':
-        case 'Q':
-        case 'E':
-        case 'e':
-        case 'w':
-        case 'W':
-        case 'a':
-        case 'A':
-        case 's':
-        case 'S':
-        case 'd':
-        case 'D':
-        case 'z':
-        case 'Z':
-        case 'x':
-        case 'X':
-        case 'c':
-        case 'C':
-        case 'G':
-        case 'P':
+     	 	  case KEY_UP:
+     	 		 wmove(map_win,--cursorY,cursorX);
+     	 		 break;	
+				  case KEY_DOWN:
+            cursorY= (cursorY==row-1) ? row-1 : cursorY+1;
+	   				wmove(map_win,cursorY,cursorX);     	 			
+		  			break;
+			   	case KEY_LEFT:
+				  	wmove(map_win,cursorY,--cursorX);          
+					  break;
+				  case KEY_RIGHT:
+            cursorX= (cursorX==col-2) ? col-2 : cursorX+1;
+            wmove(map_win,cursorY,cursorX);
+					  break;
+				  case 'q':
+          case 'Q':
+          case 'E':
+          case 'e':
+          case 'w':
+          case 'W':
+          case 'a':
+          case 'A':
+          case 's':
+          case 'S':
+          case 'd':
+          case 'D':
+          case 'z':
+          case 'Z':
+          case 'x':
+          case 'X':
+          case 'c':
+          case 'C':
+          case 'G':
+          case 'P':
       			map[getcury(map_win)][getcurx(map_win)]=c;
       			updateMap(map_win,row,col,map,cursorY,cursorX);
       			break;

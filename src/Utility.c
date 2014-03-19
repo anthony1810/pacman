@@ -100,9 +100,11 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
                 c=0;
                 break;    
             case 'G':
+                wattron(map_win,COLOR_PAIR(2));
                 waddch(map_win,ACS_CKBOARD);
                 map[r][c]='G';
                 c++;
+                wattron(map_win,COLOR_PAIR(1));
                 break;
             case 's':
                 waddch(map_win,ACS_BULLET);
@@ -116,7 +118,7 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
                 break;  
 			case 'P':
 				wattron(map_win,COLOR_PAIR(2));
-				waddch(map_win,'P');                  
+				waddch(map_win,ACS_DIAMOND);                  
 				map[r][c]='P';
                 c++;
 				wattron(map_win,COLOR_PAIR(1));                   	
@@ -177,7 +179,9 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 waddch(map_win,'\n');
                 break;    
             case 'G':
+                wattron(map_win,COLOR_PAIR(2));
                 waddch(map_win,ACS_CKBOARD);
+                wattron(map_win,COLOR_PAIR(1));                     
                 break;
             case 's':
                 waddch(map_win,ACS_BULLET);
@@ -187,9 +191,12 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 break;  
 			case 'P':
 				wattron(map_win,COLOR_PAIR(2));
-				waddch(map_win,'P');                  
+				waddch(map_win,ACS_DIAMOND);                  
 				wattron(map_win,COLOR_PAIR(1));                   	
 				break;
+            case ' ':
+                waddch(map_win,169);
+                break;
         	}
 
 		}
