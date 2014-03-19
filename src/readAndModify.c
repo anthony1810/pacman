@@ -22,6 +22,7 @@ static void finish(int sig);
 int row;
 int col;
 int startx, starty, width, height;
+
 int main(int argc, char *argv[])
 { 	WINDOW *main_win;
     WINDOW *map_win;   
@@ -138,7 +139,6 @@ int main(int argc, char *argv[])
       }
     finish(0);               /* we're done */
 }
-
 
 static void finish(int sig)
 {
