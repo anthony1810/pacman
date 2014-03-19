@@ -23,6 +23,7 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
     }
     char ch;
     int r=0;int c=0;
+    //print Author info, map info, row ,column 
     fgets(s, 100, f);
     addstr(s);
     fgets(s, 100, f);
@@ -31,6 +32,7 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
     addstr(s);
     fgets(s, 100, f);
     addstr(s);
+
     do{
         ch=fgetc(f);
         wattron(map_win,COLOR_PAIR(1));
@@ -121,7 +123,9 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
 				break;
         }
     }while(ch!=EOF);
+    //move the cursor to the lower right of the map 
     wmove(map_win,row-1,col-2);
+    
     refresh();
     wrefresh(map_win);
 
