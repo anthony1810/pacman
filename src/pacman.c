@@ -41,15 +41,18 @@ int main(int argc, char *argv[])
 {
     init_screen();
     int ch;
+    int map_row=0;
+    int map_col=0;
+    int isEnter=0;
+	int input;
+	const char s[2] = " ";
     while((ch = getch()) != KEY_F(1))
 	{	switch(ch)
 		{	
 			case ':':
 
-				start_command_window(command_window, COMMAND_STARTY);
-				int isEnter=0;
-				int input;
-				const char s[2] = " ";
+				//start_command_window(command_window, COMMAND_STARTY);
+				
 				while((input = getch())!=27){
 					isEnter = 0;
 					start_command_window(command_window, COMMAND_STARTY);
@@ -101,24 +104,25 @@ int main(int argc, char *argv[])
 							wprintw(command_window,"write to this file and will quit");
 							wrefresh(command_window);
 							getch();
-							stop_command_window(command_window, 0,0);
+							stop_command_window(command_window, game_window,map_row,map_col);
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
 							wprintw(command_window,"sucessfully write to ");
 							wprintw(command_window, str_recieve[1]);
 							wprintw(command_window, " and will quit");
 							wrefresh(command_window);
 							getch();
-							stop_command_window(command_window, 0,0);
+							stop_command_window(command_window,game_window, map_row,map_col);
 						}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
-
+							char s[100];
 							FILE *f = fopen("../levels/level1.pac", "r");
+							if(!f){
+								fprintf(stderr, "can't" );
+							}
 						    fgets(s, 100, f);
 						    //memcpy(author, s, 100);
 						    fgets(s, 100, f);
 						    //memcpy(map_name, s, 100);
 						    fgets(s, 100, f);
-						    int map_col;
-						  	int map_row;
 						    map_row=atoi(s);
 						    fgets(s, 100, f);
 						    map_col=atoi(s)+1;
@@ -134,6 +138,9 @@ int main(int argc, char *argv[])
 							wrefresh(command_window);
 							getch();
 							start_command_window(command_window, COMMAND_STARTY);
+							wmove(game_window, map_row-1, map_col-2);
+							refresh();
+							wrefresh(game_window);
 						}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 							&& str_recieve[2] != NULL && str_recieve[3] != NULL){
 							int height = atoi(str_recieve[2]);
@@ -156,8 +163,9 @@ int main(int argc, char *argv[])
 					}
 				}
 				isEnter = 0;
-				stop_command_window(command_window, 0, 0);
+				stop_command_window(command_window,game_window, map_row, map_col);
 				refresh();
+				noecho();
 				break;
 		}
 	}
