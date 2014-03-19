@@ -3,153 +3,229 @@
 #include <signal.h>
 #include <time.h>
 #include <assert.h>
+#include <string.h>
+#include "write_file.h"
+#include "read_file.h"
+#include "command.h"
 
-// define your own colors: the numbers correspond to the colors defined
-// in the terminal configuration
-#define COLOR_BACKGROUND 0
-#define COLOR_WALL       1
-#define COLOR_PACMAN     2
 
-/**
-  * Based on an example taken on this site:
-  * http://invisible-island.net/ncurses/ncurses-intro.html
-  *
-  * @author http://invisible-island.net/ncurses/ncurses-intro.html
-  * @author Denis Rinfret
-  */
-static void finish(int sig);
+
+
+void init_screen();
+WINDOW *title_window;
+WINDOW *game_window;
+WINDOW *command_window;
+WINDOW *note_window;
+const char TITLE[] = "PACMAN EDITOR";
+const char VERSION[] = "@version 1.0";
+const char CREATOR[] = "@created by THE THUNDER";	
+
+
+
+const int TITLE_HEIGHT = 3;
+
+const int GAME_WIDTH = 65;
+const int GAME_HEIGHT = 35;
+const int GAME_STARTY = 6;
+
+const int COMMAND_HEIGHT = 3;
+const int COMMAND_STARTY = 41;
+// typedef struct _WIN_struct {
+
+// 	int startx, starty;
+// 	int height, width;
+
+// }WIN;
 
 int main(int argc, char *argv[])
 {
-    int num = 0;
-    char out[75];
-    struct timespec delay = {0, 500000000L}, 
-                     rem;
-    
-    //delay.tv_sec = 0;
-    //delay.tv_nsec = 500000000L;
-    
-    /* initialize your non-curses data structures here */
-    
-    (void) signal(SIGINT, finish);      /* arrange interrupts to terminate */
+    init_screen();
+    int ch;
+    while((ch = getch()) != KEY_F(1))
+	{	switch(ch)
+		{	
+			case ':':
 
-    (void) initscr();      /* initialize the curses library */
-    keypad(stdscr, TRUE);  /* enable keyboard mapping */
-    (void) nonl();         /* tell curses not to do NL->CR/NL on output */
-    (void) cbreak();       /* take input chars one at a time, no wait for \n */
-    (void) noecho();         /* echo input - in color */
+				start_command_window(command_window, COMMAND_STARTY);
+				int isEnter=0;
+				int input;
+				const char s[2] = " ";
+				while((input = getch())!=27){
+					isEnter = 0;
+					start_command_window(command_window, COMMAND_STARTY);
+					waddch(command_window,input);
+					wrefresh(command_window);
+					if(input == KEY_BACKSPACE || input == KEY_DC){
+						wclear(command_window);
+						waddch(command_window, ':');
+						wrefresh(command_window);
+					}else if(input == 10 && isEnter == 0){
+						isEnter =1;
+						wclear(command_window);
+						waddch(command_window, ':');
+						wrefresh(command_window);
+						echo();
+						char commands[60];
+						getnstr(commands,59);
 
-    if (has_colors()) {
-    
-        start_color();
-        // in theory, you can change the value of the 8 predefined colors
-        // but it works only some times
-        //assert(init_color(COLOR_YELLOW, 200, 200, 1000) == OK);
-        // instead, you have to redefine the colors in the terminal
+						if(strlen(commands)!=0){
+						char *token;
+						char *str_recieve[3];
+									   
+						/* get the first token */
+						token = strtok(commands, s);
+						str_recieve[0] = token;
+						token = strtok(NULL, s);
+						str_recieve[1] = token;
+						token = strtok(NULL, s);
+						str_recieve[2] = token;
+						token = strtok(NULL, s);
+						str_recieve[3] = token;
+						wclear(command_window);
+						waddch(command_window, ':');
+						if(strcmp(commands,"q")==0){
+							endwin();			/* End curses mode		  */
+							//return 0;
+						}else if(strcmp(commands,"w")==0 && str_recieve[1]== NULL){
+							wprintw(command_window,"write to this file ");
+							wrefresh(command_window);
+							getch();
+							start_command_window(command_window, COMMAND_STARTY);
+						}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
+							wprintw(command_window,"sucessfully write to ");
+							wprintw(command_window, str_recieve[1]);
+							wrefresh(command_window);
+							getch();
+							start_command_window(command_window, COMMAND_STARTY);
+						}else if(strcmp(commands,"wq")==0 && str_recieve[1]== NULL){
+							wprintw(command_window,"write to this file and will quit");
+							wrefresh(command_window);
+							getch();
+							stop_command_window(command_window, 0,0);
+						}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
+							wprintw(command_window,"sucessfully write to ");
+							wprintw(command_window, str_recieve[1]);
+							wprintw(command_window, " and will quit");
+							wrefresh(command_window);
+							getch();
+							stop_command_window(command_window, 0,0);
+						}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
 
-        // initialise you colors pairs (foreground, background)
-        init_pair(1, COLOR_WALL,    COLOR_BACKGROUND);
-        init_pair(2, COLOR_PACMAN,  COLOR_BACKGROUND);
+							FILE *f = fopen("../levels/level1.pac", "r");
+						    fgets(s, 100, f);
+						    //memcpy(author, s, 100);
+						    fgets(s, 100, f);
+						    //memcpy(map_name, s, 100);
+						    fgets(s, 100, f);
+						    int map_col;
+						  	int map_row;
+						    map_row=atoi(s);
+						    fgets(s, 100, f);
+						    map_col=atoi(s)+1;
+						    //4 is the right
+						    char map[map_row][map_col];
+						   	readFile(game_window,map_row,map_col,map,s);
+						    fclose(f);
+						    
 
-    }
-    
-    // add a bunch of characters
-    // you should probably use the function mvaddch and other similar function
-    // the move the cursor to some position
-    attrset(COLOR_PAIR(1));
-    addch(ACS_ULCORNER);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_TTEE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_TTEE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_URCORNER);
-    addch('\n');
-    addch(ACS_VLINE);
-    addch(' ');
-    addch(ACS_CKBOARD);
-    addch(' ');
-    addch(ACS_VLINE);
-    addch(' ');
-    addch(' ');
-    addch(' ');
-    addch(ACS_VLINE);
-    addch(' ');
-    addch(' ');
-    attrset(COLOR_PAIR(2));
-    addch(ACS_DIAMOND);
-    attrset(COLOR_PAIR(1));
-    addch(' ');
-    addch(ACS_VLINE);
-    addch('\n');
-    addch(ACS_LTEE);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(' ');
-    addch(ACS_VLINE);
-    addch(' ');
-    addch(ACS_ULCORNER);
-    addch(ACS_HLINE);
-    addch(ACS_RTEE);
-    addch(' ');
-    addch(ACS_ULCORNER);
-    addch(ACS_URCORNER);
-    addch(' ');
-    addch(ACS_VLINE);
-    addch('\n');
-    addch(ACS_ULCORNER);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_URCORNER);
-    addch('\n');
-    addch(ACS_LLCORNER);
-    addch(ACS_HLINE);
-    addch(ACS_HLINE);
-    addch(ACS_LRCORNER);
-    addch('\n');
-    
-    // print the hexadecimal values of some of these extended characters
-    sprintf(out, "%x %x %x %x %x", (int)ACS_ULCORNER, (int)ACS_LLCORNER, (int)ACS_URCORNER, (int)ACS_LRCORNER,(int)A_ALTCHARSET);
-    addstr(out);
-    sprintf(out, "   %c %c %c %c %c", (char)(ACS_ULCORNER^A_ALTCHARSET), (char)(ACS_LLCORNER^A_ALTCHARSET), (char)(ACS_URCORNER^A_ALTCHARSET), (int)(ACS_LRCORNER^A_ALTCHARSET), (char)(A_ALTCHARSET^A_ALTCHARSET));
-    addstr(out);
-    
-    for (;;) {
-        int c = getch();     /* refresh, accept single keystroke of input */
-        /* process the command keystroke */
-        if (c == 'q') {
-            break;
-        }
-        sprintf(out, "%i", c);
-        addstr(out);
-        if (c == KEY_DOWN) {
-            addstr("down");
-        }
-        
-	    attrset(COLOR_PAIR(num % 8));
-	    num++;
-	    
-	    // sleep 
-        nanosleep(&delay, &rem);
-        
-        
-    }
 
-    finish(0);               /* we're done */
+							wprintw(command_window,"sucessfully read from ");
+							wprintw(command_window, str_recieve[1]);
+							wrefresh(command_window);
+							getch();
+							start_command_window(command_window, COMMAND_STARTY);
+						}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
+							&& str_recieve[2] != NULL && str_recieve[3] != NULL){
+							int height = atoi(str_recieve[2]);
+							int width = atoi(str_recieve[3]);
+							wprintw(command_window,"sucessfully create new file with height =");
+							waddch(command_window, height);
+							wprintw(command_window," and width = ");
+							waddch(command_window, width);
+							wrefresh(command_window);
+							getch();
+							start_command_window(command_window, COMMAND_STARTY);
+						}else {
+							wprintw(command_window, "Can't recognise that commands! Sorry!");
+							wrefresh(command_window);
+							getch();
+							isEnter = 0;
+							start_command_window(command_window, COMMAND_STARTY);
+						}
+					}
+					}
+				}
+				isEnter = 0;
+				stop_command_window(command_window, 0, 0);
+				refresh();
+				break;
+		}
+	}
+		
+	endwin();			/* End curses mode		  */
+	return 0;
 }
 
-static void finish(int sig)
-{
-    endwin();
+void init_screen(){
+	initscr();	
+	int row,col;
+	getmaxyx(stdscr,row,col);
+	cbreak();
+	keypad(stdscr, TRUE);
 
-    /* do your non-curses wrapup here */
+	char pacman[] = "pacman | ";
+	char ghost[] = "ghost | ";
+	char pellet[] = "pellet | ";
+	char super_pellet[] ="super pellet | ";
+	char fruit[] = "fruit";
 
-    exit(0);
+	int note_length = strlen(pacman) + strlen(ghost) + strlen(pellet) + strlen(super_pellet) + strlen(fruit) + 5;
+
+	
+	getmaxyx(stdscr,row,col);
+	title_window = create_new_win(TITLE_HEIGHT, col, 0, 0);
+	game_window = create_new_win(GAME_HEIGHT, GAME_WIDTH, GAME_STARTY, col/2);
+	command_window = create_new_win(COMMAND_HEIGHT, col, COMMAND_STARTY, 0);
+	note_window = create_new_win(TITLE_HEIGHT, col, 4, (col - note_length)/2);
+	refresh();
+	
+	mvwprintw(title_window,0,(col-strlen(TITLE))/2,"%s",TITLE);
+	mvwprintw(title_window,1,col/2 + strlen(TITLE)/2,"%s",VERSION);
+	mvwprintw(title_window,2,col/2 + strlen(TITLE)/2,"%s",CREATOR);
+
+
+	waddch(note_window,ACS_DIAMOND);
+	wprintw(note_window,pacman);
+	
+	waddch(note_window, ACS_CKBOARD);
+	wprintw(note_window, ghost);
+
+	waddch(note_window, ACS_BULLET);
+	wprintw(note_window, pellet);
+
+	waddch(note_window, ACS_DEGREE);
+	wprintw(note_window, super_pellet);
+
+	waddch(note_window, ACS_STERLING);
+	wprintw(note_window, fruit);
+	wrefresh(note_window);
+	int i;
+
+	for(i =0; i< col;i++){
+		mvprintw(5,i,"%s","-");
+	}
+
+	wrefresh(title_window);
+	wprintw(game_window,"");
+	wrefresh(game_window);
+	wprintw(command_window,"\n");
+
+	for(i =0; i< col;i++){
+		mvprintw(40,i,"%s","-");
+	}
+
+	mvwprintw(command_window,0,0,"%s", " To enable command mode, type ':' ");
+	wrefresh(command_window);
+
+
 }
