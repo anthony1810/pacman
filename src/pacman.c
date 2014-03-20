@@ -164,6 +164,7 @@ int main(int argc, char *argv[])
 							    cursorMove(game_window,map_row,map_col,map);					
 								mvwprintw(command_window,0,0,"%s", " To enable command mode, type ':' ");
 								wrefresh(command_window);
+                                break;
 							}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 								&& str_recieve[2] != NULL && str_recieve[3] != NULL){
 								int height = atoi(str_recieve[2]);
