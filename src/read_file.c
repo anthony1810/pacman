@@ -17,7 +17,7 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 	return local_win;
 }
 void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char file_name[]){
-
+    wclear(map_win);
     FILE *f ;
     char path[] = "../levels/";
     char extension[] =".pac";
@@ -212,7 +212,7 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
 }
 void cursorMove(WINDOW *game_window,int map_row,int map_col,char map[map_row][map_col]){
 
-    int c;
+                            int c;
                             int cursorX;
                             int cursorY;
 
