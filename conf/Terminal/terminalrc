@@ -16,7 +16,6 @@ MiscTabCloseButtons=TRUE
 MiscTabCloseMiddleClick=TRUE
 MiscTabPosition=GTK_POS_TOP
 MiscHighlightUrls=TRUE
-FontName=Monospace 12
 ColorPalette2=#03180000ffff
 ColorPalette3=#ffffffff5555
 ColorPalette5=#55555555ffff
@@ -24,6 +23,7 @@ ColorPalette6=#ffff55555555
 ColorPalette7=#ffffffff5555
 ColorPalette8=#55555555ffff
 ColorPalette9=#ffff5555ffff
-ColorForeground=#ffff55555555
-ColorBackground=#03180000ffff
+ColorForeground=#e49a65a30d43
+ColorSelectionUseDefault=FALSE
+ColorSelection=#000000000000
 
