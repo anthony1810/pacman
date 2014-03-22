@@ -43,10 +43,9 @@ int main(int argc, char *argv[])
     int ch;
     int isEnter=0;
 	int input;
-
-	char author[100];
+	char author[30];
 	char map_name[50];
-	char author_email[100];
+	char author_email[50];
 	int map_row=0;
     int map_col=0;
 
@@ -141,10 +140,13 @@ int main(int argc, char *argv[])
 							    str_combine(path,extension);
 							    f = fopen(path, "r");
 								if(!f){
-									fprintf(stderr, "can't" );
+									stop_command_window(command_window,game_window, map_row, map_col);	
+									mvwprintw(command_window,0,0,"%s", " Map not found, type ':' to return command mode");
+									wrefresh(command_window);
+									break;
 								}
 							    fgets(s, 100, f);
-							    memcpy(author, s, 100);
+							    get_author_name_and_email(s,author,author_email);
 							    fgets(s, 100, f);
 							    memcpy(map_name, s, 100);
 							    fgets(s, 100, f);
@@ -153,6 +155,8 @@ int main(int argc, char *argv[])
 							    map_col=atoi(s)+1;
 							    //4 is the right
 							    char map[map_row][map_col];
+							    //re-create game_window to fit the column and row
+							    game_window=create_new_win(map_row,map_col,GAME_STARTY,0);
 							   	readFile(game_window,map_row,map_col,map,s,str_recieve[1]);
 							    fclose(f);
 							    wprintw(command_window,"sucessfully read from ");
@@ -161,7 +165,7 @@ int main(int argc, char *argv[])
 								getch();
 								isEnter = 0;
 								stop_command_window(command_window,game_window, map_row, map_col);	
-							    cursorMove(game_window,map_row,map_col,map);					
+							    cursorMove(game_window,map_row,map_col,map);
 								mvwprintw(command_window,0,0,"%s", " To enable command mode, type ':' ");
 								wrefresh(command_window);
                                 break;

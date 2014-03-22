@@ -212,58 +212,76 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
 }
 void cursorMove(WINDOW *game_window,int map_row,int map_col,char map[map_row][map_col]){
 
-                            int c;
-                            int cursorX;
-                            int cursorY;
+    int c;
+    int cursorX;
+    int cursorY;
 
-                            while((c=getch())!=':'){
-                                cursorX=getcurx(game_window);
-                                cursorY=getcury(game_window);
-                                switch(c){
-                                    case ' ':
-                                        wmove(game_window,cursorY,cursorX);;
-                                        map[getcury(game_window)][getcurx(game_window)]=c;
-                                        updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
-                                        break;
-                                    case KEY_UP:
-                                         wmove(game_window,--cursorY,cursorX);
-                                         break; 
-                                    case KEY_DOWN:
-                                        cursorY= (cursorY==map_row-1) ? map_row-1 : cursorY+1;
-                                        wmove(game_window,cursorY,cursorX);                     
-                                        break;
-                                    case KEY_LEFT:
-                                        wmove(game_window,cursorY,--cursorX);          
-                                        break;
-                                    case KEY_RIGHT:
-                                        cursorX= (cursorX==map_col-2) ? map_col-2 : cursorX+1;
-                                        wmove(game_window,cursorY,cursorX);
-                                        break;
-                                      case 'q':
-                                      case 'Q':
-                                      case 'E':
-                                      case 'e':
-                                      case 'w':
-                                      case 'W':
-                                      case 'a':
-                                      case 'A':
-                                      case 's':
-                                      case 'S':
-                                      case 'd':
-                                      case 'D':
-                                      case 'z':
-                                      case 'Z':
-                                      case 'x':
-                                      case 'X':
-                                      case 'c':
-                                      case 'C':
-                                      case 'G':
-                                      case 'P':
-                                        map[getcury(game_window)][getcurx(game_window)]=c;
-                                        updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
-                                        break;
-                                    }
-                                    wrefresh(game_window);
-                                }
+    while((c=getch())!=':'){
+        cursorX=getcurx(game_window);
+        cursorY=getcury(game_window);
+        switch(c){
+            case ' ':
+                wmove(game_window,cursorY,cursorX);;
+                map[getcury(game_window)][getcurx(game_window)]=c;
+                updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
+                break;
+            case KEY_UP:
+                wmove(game_window,--cursorY,cursorX);
+                break; 
+            case KEY_DOWN:
+                cursorY= (cursorY==map_row-1) ? map_row-1 : cursorY+1;
+                wmove(game_window,cursorY,cursorX);                     
+                break;
+            case KEY_LEFT:
+                wmove(game_window,cursorY,--cursorX);          
+                break;
+            case KEY_RIGHT:
+                cursorX= (cursorX==map_col-2) ? map_col-2 : cursorX+1;
+                wmove(game_window,cursorY,cursorX);
+                break;
+            case 'q':
+            case 'Q':
+            case 'E':
+            case 'e':
+            case 'w':
+            case 'W':
+            case 'a':
+            case 'A':
+            case 's':
+            case 'S':
+            case 'd':
+            case 'D':
+            case 'z':
+            case 'Z':
+            case 'x':
+            case 'X':
+            case 'c':
+            case 'C':
+            case 'G':
+            case 'P':
+                map[getcury(game_window)][getcurx(game_window)]=c;
+                updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
+                break;
+            }
+            wrefresh(game_window);
+    }
+}
+void get_author_name_and_email(char fullString[],char author[], char email[]){
+    int emailBegin=0;
+    int i;
+    for (i = 0; fullString[i+1]!='>'; i++)
+    {
+        if(fullString[i]=='<'){
+            emailBegin=i;
+        }
+        if(emailBegin==0){
+            author[i]=fullString[i];
+        }
+        if(emailBegin!=0){
+            email[i-emailBegin]=fullString[i+1];
+        }
+    }
+    email[i-(emailBegin)]='\0';
+    author[emailBegin-1]='\0';
 }
 
