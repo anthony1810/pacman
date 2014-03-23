@@ -10,49 +10,49 @@ WINDOW *create_new_win(int height, int width, int starty, int startx)
 	local_win = newwin(height, width, starty, startx);
 	return local_win;
 }
-
+	char path[30] = "../levels/";
+	char extension[] =".pac";
 void write_to_file(char file_name[],char author_name[], char author_email[], WINDOW *my_win, int width, int height){
 	
 	FILE *fp;
-	char path[] = "../levels/";
-	char extension[] =".pac";
 
 	str_combine(path,file_name);
 	str_combine(path,extension);
 	
-	fp=fopen(path, "rb+");
-	if(fp == NULL){
-		fp = fopen(path, "wb");
-	}
 	//put name and email
 	str_combine(author_name, " <");
 	str_combine(author_name, author_email);
 	str_combine(author_name,">");
+
+	fp=fopen(path, "rb+");
+	if(fp == NULL){
+		fp = fopen(path, "wb");
+	}
+
 	fputs(author_name,fp);
 	fputc('\n',fp);
 
 	//put file name
 	fputs(file_name,fp);
 	fputc('\n',fp);
-	printw("%9d",height+1);
+
 	//put rows
 	fprintf(fp, "%d", height);
 	fputc('\n',fp);
 
 	//put col
-	fprintf(fp, "%d", width);
+	fprintf(fp, "%d", width-1);
 	fputc('\n',fp);
 	// fputs(,fp);
 	int i;
 	int k;
 
-	for(i=0; i<=height+1; i++){
-		for(k=0;k<=width+1;k++){
+	for(i=0; i<height; i++){
+		for(k=0;k<width;k++){
 			int characters = (int)mvwinch(my_win, i, k);
 			fputc(getTranslatedChar(characters), fp);
 		}
 		printw("\n");
-		addstr("aaaaaaa");
 		fputc('\n', fp);
 		refresh();	
 	}
@@ -136,5 +136,6 @@ void str_combine(char s1[], char s2[]){
         s1[i]=s2[j];
     }
     s1[i]='\0';
+    
 }
 

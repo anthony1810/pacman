@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 								getch();
 								stop_command_window(command_window, game_window,map_row,map_col);
 							}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
-								write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row+1, map_col+1);
+								write_to_file(str_recieve[1], author, author_email, game_window,map_col, map_row);
 								wprintw(command_window,"sucessfully write to ");
 								wprintw(command_window, str_recieve[1]);
 								wrefresh(command_window);
@@ -178,6 +178,8 @@ int main(int argc, char *argv[])
 							    //4 is the right
 							    char map[map_row][map_col];
 							    //re-create game_window to fit the column and row
+							    wclear(game_window);
+							    wrefresh(game_window);
 							    game_window=create_new_win(map_row,map_col,GAME_STARTY,0);
 							   	readFile(game_window,map_row,map_col,map,s,str_recieve[1]);
 							    fclose(f);

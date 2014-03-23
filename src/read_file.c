@@ -102,6 +102,7 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
                 c=0;
                 break;    
             case 'G':
+            case 'g':
                 wattron(map_win,COLOR_PAIR(2));
                 waddch(map_win,ACS_CKBOARD);
                 map[r][c]='G';
@@ -119,12 +120,19 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
                 c++;
                 break;  
 			case 'P':
+            case 'p':
 				wattron(map_win,COLOR_PAIR(2));
 				waddch(map_win,ACS_DIAMOND);                  
 				map[r][c]='P';
                 c++;
 				wattron(map_win,COLOR_PAIR(1));                   	
 				break;
+            case 'f':
+            case 'F':
+                waddch(map_win,ACS_STERLING);
+                map[r][c]='f';
+                c++;
+                break;  
             case ':':
                 break;
         }
@@ -183,6 +191,7 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 waddch(map_win,'\n');
                 break;    
             case 'G':
+            case 'g':
                 wattron(map_win,COLOR_PAIR(2));
                 waddch(map_win,ACS_CKBOARD);
                 wattron(map_win,COLOR_PAIR(1));                     
@@ -194,10 +203,15 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 waddch(map_win,ACS_DEGREE);
                 break;  
 			case 'P':
+            case 'p':
 				wattron(map_win,COLOR_PAIR(2));
 				waddch(map_win,ACS_DIAMOND);                  
 				wattron(map_win,COLOR_PAIR(1));                   	
 				break;
+            case 'f':
+            case 'F':
+                waddch(map_win,ACS_STERLING);
+                break; 
             case ' ':
                 waddch(map_win,169);
                 break;
@@ -259,6 +273,8 @@ void cursorMove(WINDOW *game_window,int map_row,int map_col,char map[map_row][ma
             case 'C':
             case 'G':
             case 'P':
+            case 'f':
+            case 'F':
                 map[getcury(game_window)][getcurx(game_window)]=c;
                 updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
                 break;
