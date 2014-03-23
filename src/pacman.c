@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
     int isEnter=0;
 	int input;
 	char author[50];
-	char map_title[50];
 	char map_name[50];
 	char author_email[50];
 	int map_row=0;
@@ -163,12 +162,11 @@ int main(int argc, char *argv[])
 							    fgets(s, 100, f);
 							    get_author_name_and_email(s,author,author_email);
 							    fgets(s, 100, f);
-							    memcpy(map_title, s, 100);
 							    fgets(s, 100, f);
 							    map_row=atoi(s);
 							    fgets(s, 100, f);
 							    map_col=atoi(s)+1;
-
+							
 							    wprintw(command_window, map_name);
 								wprintw(command_window, "-");
 								wprintw(command_window, author);
