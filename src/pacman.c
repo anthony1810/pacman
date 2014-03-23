@@ -43,7 +43,8 @@ int main(int argc, char *argv[])
     int ch;
     int isEnter=0;
 	int input;
-	char author[30];
+	char author[50];
+	char map_title[50];
 	char map_name[50];
 	char author_email[50];
 	int map_row=0;
@@ -92,14 +93,27 @@ int main(int argc, char *argv[])
 								endwin();			/* End curses mode		  */
 								//return 0;
 							}else if(strcmp(commands,"w")==0 && str_recieve[1]== NULL){
-								printw(map_name);
-								refresh();
-								if(strlen(map_name)!=0 && strlen(author)==0){
-									//write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
-									wprintw(command_window,"successfully write to ");
-									wprintw(command_window, map_name);
+								wprintw(command_window, map_name);
+								wprintw(command_window, "-");
+								wprintw(command_window, author);
+								wprintw(command_window, "-");
+								wprintw(command_window,author_email);
+								wprintw(command_window, "-");
+								waddch(command_window, map_row);
+								wprintw(command_window, "-");
+								waddch(command_window, map_col);
+								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
+									//write_to_file(map_name, author, author_email, game_window,map_row, map_col);
+									// wprintw(command_window,"successfully write to ");
+									// wprintw(command_window, map_name);
+									wprintw(command_window, author);
+									wprintw(command_window, "-");
+									wprintw(command_window, author_email);
+									wprintw(command_window, "-");
+									mvprintw(0,0,"%d",map_row);
+								 	mvprintw(0,1,"%d",map_col);
 								}else {
-									wprintw(command_window, "No file to write to!");
+									wprintw(command_window, "File info is inadequate!");
 								}
 								wrefresh(command_window);
 								getch();
@@ -136,6 +150,7 @@ int main(int argc, char *argv[])
 								FILE *f ;
 							    char path[] = "../levels/";
 							    char extension[] =".pac";
+							    strcpy(map_name, str_recieve[1]);							    
 							    str_combine(path,str_recieve[1]);
 							    str_combine(path,extension);
 							    f = fopen(path, "r");
@@ -148,11 +163,20 @@ int main(int argc, char *argv[])
 							    fgets(s, 100, f);
 							    get_author_name_and_email(s,author,author_email);
 							    fgets(s, 100, f);
-							    memcpy(map_name, s, 100);
+							    memcpy(map_title, s, 100);
 							    fgets(s, 100, f);
 							    map_row=atoi(s);
 							    fgets(s, 100, f);
 							    map_col=atoi(s)+1;
+
+							    wprintw(command_window, map_name);
+								wprintw(command_window, "-");
+								wprintw(command_window, author);
+								wprintw(command_window, "-");
+								wprintw(command_window,author_email);
+								mvprintw(0,0,"%d",map_row);
+								mvprintw(0,2,"%d",map_col);
+
 							    //4 is the right
 							    char map[map_row][map_col];
 							    //re-create game_window to fit the column and row
