@@ -10,26 +10,22 @@ WINDOW *create_new_win(int height, int width, int starty, int startx)
 	local_win = newwin(height, width, starty, startx);
 	return local_win;
 }
-	char path[30] = "../levels/";
-	char extension[] =".pac";
+	
 void write_to_file(char file_name[],char author_name[], char author_email[], WINDOW *my_win, int width, int height){
 	
 	FILE *fp;
+	char path[100] = "../levels/";
+	char extension[100] =".pac";
+ 	strcat(path,file_name);
+	strcat(path,extension);
 
-	str_combine(path,file_name);
-	str_combine(path,extension);
-	
+	fp=fopen(path, "w");
+
 	//put name and email
-	str_combine(author_name, " <");
-	str_combine(author_name, author_email);
-	str_combine(author_name,">");
-
-	fp=fopen(path, "rb+");
-	if(fp == NULL){
-		fp = fopen(path, "wb");
-	}
-
 	fputs(author_name,fp);
+	fputs(" <",fp);
+	fputs(author_email, fp);
+	fputs(">",fp);
 	fputc('\n',fp);
 
 	//put file name
@@ -41,7 +37,7 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 	fputc('\n',fp);
 
 	//put col
-	fprintf(fp, "%d", width-1);
+	fprintf(fp, "%d", width);
 	fputc('\n',fp);
 	// fputs(,fp);
 	int i;

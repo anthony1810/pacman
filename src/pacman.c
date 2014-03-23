@@ -9,8 +9,6 @@
 #include "command.h"
 
 
-//hhhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
 void init_screen();
 WINDOW *title_window;
 WINDOW *game_window;
@@ -48,6 +46,10 @@ int main(int argc, char *argv[])
 	char author_email[50];
 	int map_row=0;
     int map_col=0;
+
+    int scr_x, scr_y;
+    getmaxyx(stdscr, scr_y, scr_x);
+
 
 	const char s[2] = " ";
     while((ch = getch()) != KEY_F(1))
@@ -90,27 +92,15 @@ int main(int argc, char *argv[])
 							waddch(command_window, ':');
 							if(strcmp(commands,"q")==0){
 								endwin();			/* End curses mode		  */
-								//return 0;
+								return 0;
 							}else if(strcmp(commands,"w")==0 && str_recieve[1]== NULL){
-								wprintw(command_window, map_name);
-								wprintw(command_window, "-");
-								wprintw(command_window, author);
-								wprintw(command_window, "-");
-								wprintw(command_window,author_email);
-								wprintw(command_window, "-");
-								waddch(command_window, map_row);
-								wprintw(command_window, "-");
-								waddch(command_window, map_col);
 								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
-									//write_to_file(map_name, author, author_email, game_window,map_row, map_col);
-									// wprintw(command_window,"successfully write to ");
-									// wprintw(command_window, map_name);
-									wprintw(command_window, author);
-									wprintw(command_window, "-");
-									wprintw(command_window, author_email);
-									wprintw(command_window, "-");
-									mvprintw(0,0,"%d",map_row);
-								 	mvprintw(0,1,"%d",map_col);
+									write_to_file(map_name, author, author_email, game_window,map_row, map_col);
+									wprintw(command_window,"successfully write to ");
+									wprintw(command_window, map_name);	
+									wrefresh(command_window);	
+									getch();	
+									stop_command_window(command_window, game_window,map_row,map_col);			
 								}else {
 									wprintw(command_window, "File info is inadequate!");
 								}
@@ -118,32 +108,47 @@ int main(int argc, char *argv[])
 								getch();
 								stop_command_window(command_window, game_window,map_row,map_col);
 							}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
-								write_to_file(str_recieve[1], author, author_email, game_window,map_col, map_row);
-								wprintw(command_window,"sucessfully write to ");
-								wprintw(command_window, str_recieve[1]);
+								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
+									write_to_file(str_recieve[1], author, author_email, game_window,map_col, map_row);
+									wprintw(command_window,"sucessfully write to ");
+									wprintw(command_window, str_recieve[1]);
+								}else {
+									wprintw(command_window, "File info is inadequate!");
+								}
 								wrefresh(command_window);
 								getch();
 								stop_command_window(command_window, game_window,map_row,map_col);
 							}else if(strcmp(commands,"wq")==0 && str_recieve[1]== NULL){
-								wprintw(command_window,"write to this file ");
-								wprintw(command_window, map_name);
-								wprintw(command_window,"and will quit");
-								//write_to_file(map_name, author, "qquang269@gmail.com", game_window,map_row, map_col);
-								wrefresh(command_window);
-								getch();
-								//stop_command_window(command_window, game_window,map_row,map_col);
-								endwin();
-								return 0;
+								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
+									write_to_file(map_name, author, author_email, game_window,map_row, map_col);
+									wprintw(command_window,"write to ");
+									wprintw(command_window, map_name);
+									wprintw(command_window,"and will quit");
+									getch();
+									endwin();
+									return 0;
+								}else {
+									wprintw(command_window, "File info is inadequate!");
+									wrefresh(command_window);
+									getch();									
+									stop_command_window(command_window, game_window,map_row,map_col);		
+								}														
 							}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
-								//write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
-								wprintw(command_window,"sucessfully write to ");
-								wprintw(command_window, str_recieve[1]);
-								wprintw(command_window, " and will quit");
-								wrefresh(command_window);
-								getch();
-								//stop_command_window(command_window,game_window, map_row,map_col);
-								endwin();			/* End curses mode		  */
-								return 0;
+								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
+									write_to_file(str_recieve[1], author, author_email, game_window,map_row, map_col);
+									wprintw(command_window,"sucessfully write to ");
+									wprintw(command_window, str_recieve[1]);
+									wprintw(command_window, " and will quit");
+									wrefresh(command_window);
+									getch();
+									//stop_command_window(command_window,game_window, map_row,map_col);
+									endwin();			/* End curses mode		  */
+									return 0;
+								}else{
+									wprintw(command_window, "File info is inadequate!");
+									getch();
+									stop_command_window(command_window, game_window,map_row,map_col);	
+								}
 							}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
 								char s[100];
 								FILE *f ;
@@ -155,7 +160,7 @@ int main(int argc, char *argv[])
 							    f = fopen(path, "r");
 								if(!f){
 									stop_command_window(command_window,game_window, map_row, map_col);	
-									mvwprintw(command_window,0,0,"%s", " Map not found, type ':' to return command mode");
+									mvprintw(COMMAND_STARTY,0,"%s", " Map not found, type ':' to return command mode");
 									wrefresh(command_window);
 									break;
 								}
@@ -165,22 +170,15 @@ int main(int argc, char *argv[])
 							    fgets(s, 100, f);
 							    map_row=atoi(s);
 							    fgets(s, 100, f);
-							    map_col=atoi(s)+1;
-							
-							    wprintw(command_window, map_name);
-								wprintw(command_window, "-");
-								wprintw(command_window, author);
-								wprintw(command_window, "-");
-								wprintw(command_window,author_email);
-								mvprintw(0,0,"%d",map_row);
-								mvprintw(0,2,"%d",map_col);
+							    map_col=atoi(s);
 
 							    //4 is the right
 							    char map[map_row][map_col];
 							    //re-create game_window to fit the column and row
 							    wclear(game_window);
 							    wrefresh(game_window);
-							    game_window=create_new_win(map_row,map_col,GAME_STARTY,0);
+							    delwin(game_window);
+							    game_window=create_new_win(map_row,map_col,GAME_STARTY,scr_x/2);
 							   	readFile(game_window,map_row,map_col,map,s,str_recieve[1]);
 							    fclose(f);
 							    wprintw(command_window,"sucessfully read from ");
@@ -190,20 +188,45 @@ int main(int argc, char *argv[])
 								isEnter = 0;
 								stop_command_window(command_window,game_window, map_row, map_col);	
 							    cursorMove(game_window,map_row,map_col,map);
-								mvwprintw(command_window,0,0,"%s", " To enable command mode, type ':' ");
-								wrefresh(command_window);
-                                break;
+								// mvprintw(COMMAND_STARTY,0,"%s", "To enable command mode, type ':' ");
+								// wrefresh(command_window);
+        //                         break;
+							    start_command_window(command_window, COMMAND_STARTY);
 							}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 								&& str_recieve[2] != NULL && str_recieve[3] != NULL){
-								int height = atoi(str_recieve[2]);
-								int width = atoi(str_recieve[3]);
-								wprintw(command_window,"sucessfully create new file with height =");
-								waddch(command_window, height);
-								wprintw(command_window," and width = ");
-								waddch(command_window, width);
+
+								strcpy(map_name,str_recieve[1]);
+								map_row = atoi(str_recieve[2]);
+								map_col = atoi(str_recieve[3]);
+
+								FILE *fp;
+								char path[100] = "../levels/";
+								char extension[100] =".pac";
+							 	strcat(path,map_name);
+								strcat(path,extension);
+
+								char map[map_row][map_col];
+
+								fp=fopen(path, "w");
+
+
+								wprintw(command_window,"sucessfully create new file with row =");
+								wprintw(command_window, "%d",map_row);
+								wprintw(command_window," and col = ");
+								wprintw(command_window,"%d", map_col);
 								wrefresh(command_window);
-								getch();
+
+								wclear(game_window);
+							    wrefresh(game_window);
+							    delwin(game_window);
+							    game_window=create_new_win(map_row,map_col,GAME_STARTY,scr_x/2);
+							    getch();
+								isEnter = 0;
+								stop_command_window(command_window,game_window, map_row, map_col);	
+							    cursorMove(game_window,map_row,map_col,map);
+								
 								start_command_window(command_window, COMMAND_STARTY);
+
 							}else {
 								wprintw(command_window, "Can't recognise that commands! Sorry!");
 								wrefresh(command_window);
