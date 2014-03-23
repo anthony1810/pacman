@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 								getch();
 								stop_command_window(command_window, game_window,map_row,map_col);
 							}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
-								//write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row, map_col);
+								write_to_file(str_recieve[1], author, "qquang269@gmail.com", game_window,map_row+1, map_col+1);
 								wprintw(command_window,"sucessfully write to ");
 								wprintw(command_window, str_recieve[1]);
 								wrefresh(command_window);

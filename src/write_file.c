@@ -12,9 +12,11 @@ WINDOW *create_new_win(int height, int width, int starty, int startx)
 }
 
 void write_to_file(char file_name[],char author_name[], char author_email[], WINDOW *my_win, int width, int height){
+	
 	FILE *fp;
 	char path[] = "../levels/";
 	char extension[] =".pac";
+
 	str_combine(path,file_name);
 	str_combine(path,extension);
 	
@@ -32,23 +34,25 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 	//put file name
 	fputs(file_name,fp);
 	fputc('\n',fp);
-
+	printw("%9d",height+1);
 	//put rows
 	fprintf(fp, "%d", height);
 	fputc('\n',fp);
 
-	//put height
+	//put col
 	fprintf(fp, "%d", width);
 	fputc('\n',fp);
 	// fputs(,fp);
 	int i;
 	int k;
-	for(i=0; i<height; i++){
-		for(k=0;k<width;k++){
-			int characters = (int) mvwinch(my_win, i, k);
+
+	for(i=0; i<=height+1; i++){
+		for(k=0;k<=width+1;k++){
+			int characters = (int)mvwinch(my_win, i, k);
 			fputc(getTranslatedChar(characters), fp);
 		}
 		printw("\n");
+		addstr("aaaaaaa");
 		fputc('\n', fp);
 		refresh();	
 	}
@@ -58,64 +62,65 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 
 
 char getTranslatedChar(int ch){
+	// printw("%9d",ch);
 	//pacman
-	if(ch == 4194400){
+	if(ch == 4194912){
 		return 'p';
 	}
 	//ghost
-	else if(ch == 4194401){
+	else if(ch == 4194913){
 		return 'g';
 	}
 	// upper left corner
-	else if(ch == 4194412){
+	else if(ch == 4194668){
 		return 'q';
 	}
 	// lower left corner
-	else if(ch == 4194413){
+	else if(ch == 4194669){
 		return 'z';
 	}
 	// upper right corner
-	else if(ch == 4194411){
+	else if(ch == 4194667){
 		return 'e';
 	}
 	// lower right corner
-	else if(ch == 4194410){
+	else if(ch == 4194666){
 		return 'c';
 	}
 	// right T line
-	else if(ch == 4194420){
+	else if(ch == 4194677){
 		return 'D';
 	}
 	// left T line
-	else if(ch == 4194421){
+	else if(ch == 4194676){
 		return 'A';
 	}
 	// top T line
-	else if(ch == 4194422){
+	else if(ch == 4194679){
 		return 'W';
 	}
 	// bottom T line
-	else if(ch == 4194423){
+	else if(ch == 4194678){
 		return 'X';
 	}
 	// Horizontal line
-	else if(ch == 4194417){
+	else if(ch == 4194673){
 		return 'w';
 	}
 	// vertical line
-	else if(ch == 4194424){
+	else if(ch == 4194680){
 		return 'a';
 	}
 	// pelet
-	else if(ch == 4194430){
+	else if(ch == 4194686){
 		return 's';
 	}
 	// power pellet
-	else if(ch == 4194406){
+	else if(ch == 4194662){
 		return 'S';
 	}
 	// fruit
-	else if(ch == 4194429){
+	else if(ch == 4194685){
 		return 'f';
 	}
 	// space
