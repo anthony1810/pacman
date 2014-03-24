@@ -7,7 +7,7 @@
 #include "write_file.h"
 #include "read_file.h"
 #include "command.h"
-#include "constant.h"
+
 
 void init_screen();
 WINDOW *title_window;
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 					wrefresh(command_window);
 					if(input == KEY_BACKSPACE || input == KEY_DC){
 						wclear(command_window);
-						// waddch(command_window, ':');
+						waddch(command_window, ':');
 						wrefresh(command_window);
 					}else if(input == 10 && isEnter == 0){
 						isEnter =1;
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 								return 0;
 							}else if(strcmp(commands,"w")==0 && str_recieve[1]== NULL){
 								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
-									write_to_file(map_name, author, author_email, game_window,map_col-1, map_row);
+									write_to_file(map_name, author, author_email, game_window,map_row, map_col);
 									wprintw(command_window,"successfully write to ");
 									wprintw(command_window, map_name);	
 									wrefresh(command_window);	
@@ -112,12 +112,12 @@ int main(int argc, char *argv[])
 									write_to_file(str_recieve[1], author, author_email, game_window,map_col-1, map_row);
 									wprintw(command_window,"sucessfully write to ");
 									wprintw(command_window, str_recieve[1]);
-									wprintw(command_window, "press : to return");
 								}else {
 									wprintw(command_window, "File info is inadequate!");
 								}
 								wrefresh(command_window);
 								getch();
+								stop_command_window(command_window, game_window,map_row,map_col);
 							}else if(strcmp(commands,"wq")==0 && str_recieve[1]== NULL){
 								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
 									write_to_file(map_name, author, author_email, game_window,map_col-1, map_row);
@@ -132,8 +132,7 @@ int main(int argc, char *argv[])
 									wrefresh(command_window);
 									getch();									
 									stop_command_window(command_window, game_window,map_row,map_col);		
-								}		
-
+								}														
 							}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
 								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
 									write_to_file(str_recieve[1], author, author_email, game_window,map_col-1, map_row);
@@ -153,11 +152,11 @@ int main(int argc, char *argv[])
 							}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
 								char s[100];
 								FILE *f ;
-							    char path[100]="";
-							    strcpy(map_name,str_recieve[1]);
-							    strcat(path,PATH);
-							    strcat(path,str_recieve[1]);
-							    strcat(path,EXTENSION);
+							    char path[] = "levels/";
+							    char extension[] =".pac";
+							    strcpy(map_name, str_recieve[1]);							    
+							    str_combine(path,str_recieve[1]);
+							    str_combine(path,extension);
 							    f = fopen(path, "r");
 								if(!f){
 									stop_command_window(command_window,game_window, map_row, map_col);	
@@ -184,7 +183,6 @@ int main(int argc, char *argv[])
 							    fclose(f);
 							    wprintw(command_window,"sucessfully read from ");
 								wprintw(command_window, str_recieve[1]);
-								wprintw(command_window, ", press anykey to eidit");
 								wrefresh(command_window);
 								getch();
 								isEnter = 0;
@@ -192,44 +190,43 @@ int main(int argc, char *argv[])
 							    cursorMove(game_window,map_row,map_col,map);
 								// mvprintw(COMMAND_STARTY,0,"%s", "To enable command mode, type ':' ");
 								// wrefresh(command_window);
+        //                         break;
 							    start_command_window(command_window, COMMAND_STARTY);
 							}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 								&& str_recieve[2] != NULL && str_recieve[3] != NULL){
 								if(atoi(str_recieve[2]) > 0 && atoi(str_recieve[2]) <= 35 && atoi(str_recieve[3]) > 0 && atoi(str_recieve[3]) <=65){
-									  wclear(game_window);
-							    	wrefresh(game_window);
 									strcpy(map_name,str_recieve[1]);
 									map_row = atoi(str_recieve[2]);
 									map_col = atoi(str_recieve[3])+1;
 
 									FILE *fp;
-									char path[100] = "levels/";
+									char path[100] = "../levels/";
 									char extension[100] =".pac";
 								 	strcat(path,map_name);
 									strcat(path,extension);
 
 									char map[map_row][map_col];
-									initialize_map_array(map_row,map_col,map);
+									initialize_map_array(map_row,map_col,map)
 								   // refresh();
 								   // map2[9][9]=' ';
-									// fp=fopen(path, "w");
+									fp=fopen(path, "w");
 
-									write_to_file(map_name, "CaoAnh", "s3357672@rmit.edu.vn", game_window,map_col-1, map_row);
+
 									wprintw(command_window,"sucessfully create new file with row =");
 									wprintw(command_window, "%d",map_row);
 									wprintw(command_window," and col = ");
 									wprintw(command_window,"%d", map_col);
 									wrefresh(command_window);
 									wclear(game_window);
-								    stop_command_window(command_window,game_window, map_row, map_col);	
+								    
 								    // delwin(game_window);
 								    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x- map_col)/2);
 								    wmove(game_window,map_row-1,map_col-2);
-								    updateMap(game_window,map_row,map_col,map,getcury(game_window),getcurx(game_window));
 								    refresh();
 								    wrefresh(game_window);
 								    getch();
 									isEnter = 0;
+									stop_command_window(command_window,game_window, map_row, map_col);	
 								    cursorMove(game_window,map_row,map_col,map);
 								}else{
 									wprintw(command_window,"map rows or cols is invalid");
@@ -239,14 +236,14 @@ int main(int argc, char *argv[])
 								start_command_window(command_window, COMMAND_STARTY);
 
 							}else {
-								wprintw(command_window, "Can't recognise that commands! Sorry!,press :");
+								wprintw(command_window, "Can't recognise that commands! Sorry!");
 								wrefresh(command_window);
+								getch();
 								isEnter = 0;
+								stop_command_window(command_window,game_window, map_row, map_col);
 							}
 						}//end if(strlen(commands)!=0)
 					}//end else if(input == 10 && isEnter == 0)
-					waddch(command_window,input);
-					wrefresh(command_window);
 				}//end while (input = getch())!=27)
 				isEnter = 0;
 				// start_command_window(command_window, COMMAND_STARTY);

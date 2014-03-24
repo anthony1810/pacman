@@ -3,9 +3,7 @@
 #include <signal.h>
 #include <time.h>
 #include <assert.h>
-#include <string.h>
-#include "read_file.h"
-#include "constant.h"
+#include "Utility.h"
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {	WINDOW *local_win;
 
@@ -17,15 +15,9 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 
 	return local_win;
 }
-void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char file_name[]){
-    wclear(map_win);
-    FILE *f ;
-    char full_path[100]="" ;
+void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[]){
 
-    strcat(full_path,PATH);
-    strcat(full_path,file_name);
-    strcat(full_path,EXTENSION);
-    f = fopen(full_path, "r");
+    FILE *f = fopen("../levels/level1.pac", "r");
     if (!f) {
         fprintf(stderr, "Cannot open the file!\n");
     }
@@ -33,9 +25,13 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
     int r=0;int c=0;
     //print Author info, map info, row ,column 
     fgets(s, 100, f);
+    addstr(s);
     fgets(s, 100, f);
+    addstr(s);
     fgets(s, 100, f);
+    addstr(s);
     fgets(s, 100, f);
+    addstr(s);
 
     do{
         ch=fgetc(f);
@@ -104,7 +100,6 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
                 c=0;
                 break;    
             case 'G':
-            case 'g':
                 wattron(map_win,COLOR_PAIR(2));
                 waddch(map_win,ACS_CKBOARD);
                 map[r][c]='G';
@@ -122,21 +117,12 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
                 c++;
                 break;  
 			case 'P':
-            case 'p':
 				wattron(map_win,COLOR_PAIR(2));
 				waddch(map_win,ACS_DIAMOND);                  
 				map[r][c]='P';
                 c++;
 				wattron(map_win,COLOR_PAIR(1));                   	
 				break;
-            case 'f':
-            case 'F':
-                waddch(map_win,ACS_STERLING);
-                map[r][c]='f';
-                c++;
-                break;  
-            case ':':
-                break;
         }
     }while(ch!=EOF);
     //move the cursor to the lower right of the map 
@@ -193,7 +179,6 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 waddch(map_win,'\n');
                 break;    
             case 'G':
-            case 'g':
                 wattron(map_win,COLOR_PAIR(2));
                 waddch(map_win,ACS_CKBOARD);
                 wattron(map_win,COLOR_PAIR(1));                     
@@ -205,15 +190,10 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 waddch(map_win,ACS_DEGREE);
                 break;  
 			case 'P':
-            case 'p':
 				wattron(map_win,COLOR_PAIR(2));
 				waddch(map_win,ACS_DIAMOND);                  
 				wattron(map_win,COLOR_PAIR(1));                   	
 				break;
-            case 'f':
-            case 'F':
-                waddch(map_win,ACS_STERLING);
-                break; 
             case ' ':
                 waddch(map_win,169);
                 break;
@@ -225,93 +205,5 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
     wmove(map_win,cursorY,cursorX);
 	refresh();
     wrefresh(map_win);
-}
-void cursorMove(WINDOW *game_window,int map_row,int map_col,char map[map_row][map_col]){
 
-    int c;
-    int cursorX;
-    int cursorY;
-
-    while((c=getch())!=':'){
-        cursorX=getcurx(game_window);
-        cursorY=getcury(game_window);
-        switch(c){
-            case ' ':
-                wmove(game_window,cursorY,cursorX);;
-                map[getcury(game_window)][getcurx(game_window)]=c;
-                updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
-                break;
-            case KEY_UP:
-                wmove(game_window,--cursorY,cursorX);
-                break; 
-            case KEY_DOWN:
-                cursorY= (cursorY==map_row-1) ? map_row-1 : cursorY+1;
-                wmove(game_window,cursorY,cursorX);                     
-                break;
-            case KEY_LEFT:
-                wmove(game_window,cursorY,--cursorX);          
-                break;
-            case KEY_RIGHT:
-                cursorX= (cursorX==map_col-2) ? map_col-2 : cursorX+1;
-                wmove(game_window,cursorY,cursorX);
-                break;
-            case 'q':
-            case 'Q':
-            case 'E':
-            case 'e':
-            case 'w':
-            case 'W':
-            case 'a':
-            case 'A':
-            case 's':
-            case 'S':
-            case 'd':
-            case 'D':
-            case 'z':
-            case 'Z':
-            case 'x':
-            case 'X':
-            case 'c':
-            case 'C':
-            case 'G':
-            case 'P':
-            case 'f':
-            case 'F':
-                map[getcury(game_window)][getcurx(game_window)]=c;
-                updateMap(game_window,map_row,map_col,map,cursorY,cursorX);
-                break;
-            }
-            wrefresh(game_window);
-    }
 }
-void get_author_name_and_email(char fullString[],char author[], char email[]){
-    int emailBegin=0;
-    int i;
-    for (i = 0; fullString[i+1]!='>'; i++)
-    {
-        if(fullString[i]=='<'){
-            emailBegin=i;
-        }
-        if(emailBegin==0){
-            author[i]=fullString[i];
-        }
-        if(emailBegin!=0){
-            email[i-emailBegin]=fullString[i+1];
-        }
-    }
-    email[i-(emailBegin)]='\0';
-    author[emailBegin-1]='\0';
-}
-void initialize_map_array(int map_row,int map_col,char map[map_row][map_col]){
-    for (int i = 0; i < map_row; i++)
-    {
-        for (int j = 0; j < map_col; j++)
-        {   if(j==map_col-1){
-                map[i][j]='\n';
-            }else{
-                map[i][j]=' ';
-            }
-        }
-    }
-}
-

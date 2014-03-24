@@ -4,10 +4,11 @@
 #include <string.h>
 #include "write_file.h"
 #include "read_file.h"
+
 void start_command_window(WINDOW *command_win,int y_cor){
 	cbreak();
 	wclear(command_win);
-	// waddch(command_win,':');
+	waddch(command_win,':');
 	wprintw(command_win, "Commands enabled..type enter to begin!");
 	move(y_cor,1);
 	refresh();

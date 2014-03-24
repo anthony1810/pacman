@@ -3,9 +3,8 @@
 #include <signal.h>
 #include <time.h>
 #include <assert.h>
-#include <string.h>
 #include "read_file.h"
-#include "constant.h"
+#include "write_file.h"
 WINDOW *create_newwin(int height, int width, int starty, int startx)
 {	WINDOW *local_win;
 
@@ -20,12 +19,11 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char file_name[]){
     wclear(map_win);
     FILE *f ;
-    char full_path[100]="" ;
-
-    strcat(full_path,PATH);
-    strcat(full_path,file_name);
-    strcat(full_path,EXTENSION);
-    f = fopen(full_path, "r");
+    char path[] = "levels/";
+    char extension[] =".pac";
+    str_combine(path,file_name);
+    str_combine(path,extension);
+    f = fopen(path, "r");
     if (!f) {
         fprintf(stderr, "Cannot open the file!\n");
     }
@@ -305,13 +303,9 @@ void get_author_name_and_email(char fullString[],char author[], char email[]){
 void initialize_map_array(int map_row,int map_col,char map[map_row][map_col]){
     for (int i = 0; i < map_row; i++)
     {
-        for (int j = 0; j < map_col; j++)
-        {   if(j==map_col-1){
-                map[i][j]='\n';
-            }else{
-                map[i][j]=' ';
-            }
+        for (int j = 0; i < map_col; j++)
+        {
+            map[i][j]=' ';
         }
     }
 }
-

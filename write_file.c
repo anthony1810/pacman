@@ -3,7 +3,7 @@
 #include <curses.h>
 #include <string.h>
 #include "write_file.h"
-#include "constant.h"
+
 WINDOW *create_new_win(int height, int width, int starty, int startx)
 {	
 	WINDOW *local_win;
@@ -14,12 +14,12 @@ WINDOW *create_new_win(int height, int width, int starty, int startx)
 void write_to_file(char file_name[],char author_name[], char author_email[], WINDOW *my_win, int width, int height){
 	
 	FILE *fp;
-	char full_path[100]="" ;
+	char path[100] = "../levels/";
+	char extension[100] =".pac";
+ 	strcat(path,file_name);
+	strcat(path,extension);
 
-	strcat(full_path,PATH);
- 	strcat(full_path,file_name);
-	strcat(full_path,EXTENSION);
-	fp=fopen(full_path, "w");
+	fp=fopen(path, "w");
 
 	//put name and email
 	fputs(author_name,fp);
