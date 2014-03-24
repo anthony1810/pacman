@@ -170,15 +170,15 @@ int main(int argc, char *argv[])
 							    fgets(s, 100, f);
 							    map_row=atoi(s);
 							    fgets(s, 100, f);
-							    map_col=atoi(s);
+							    map_col=atoi(s)+1;
 
 							    //4 is the right
 							    char map[map_row][map_col];
 							    //re-create game_window to fit the column and row
 							    wclear(game_window);
 							    wrefresh(game_window);
-							    delwin(game_window);
-							    game_window=create_new_win(map_row,map_col,GAME_STARTY,scr_x/2);
+							    // delwin(game_window);
+							    game_window=create_new_win(map_row,map_col,GAME_STARTY,0);
 							   	readFile(game_window,map_row,map_col,map,s,str_recieve[1]);
 							    fclose(f);
 							    wprintw(command_window,"sucessfully read from ");
@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 
 								strcpy(map_name,str_recieve[1]);
 								map_row = atoi(str_recieve[2]);
-								map_col = atoi(str_recieve[3]);
+								map_col = atoi(str_recieve[3])+1;
 
 								FILE *fp;
 								char path[100] = "../levels/";
@@ -206,7 +206,14 @@ int main(int argc, char *argv[])
 								strcat(path,extension);
 
 								char map[map_row][map_col];
-
+								// for (int i = 0; i < map_row; i++)
+							 //    {
+							 //        for (int j = 0; i < map_col; j++)
+							 //        {
+							 //            map[i][j]=' ';
+							 //        }
+							 //    }
+							    map[0][0]=' ';
 								fp=fopen(path, "w");
 
 
@@ -215,11 +222,13 @@ int main(int argc, char *argv[])
 								wprintw(command_window," and col = ");
 								wprintw(command_window,"%d", map_col);
 								wrefresh(command_window);
-
 								wclear(game_window);
+							    
+							    // delwin(game_window);
+							    game_window=create_new_win(map_row,map_col,GAME_STARTY,0);
+							    wmove(game_window,map_row-1,map_col-2);
+							    refresh();
 							    wrefresh(game_window);
-							    delwin(game_window);
-							    game_window=create_new_win(map_row,map_col,GAME_STARTY,scr_x/2);
 							    getch();
 								isEnter = 0;
 								stop_command_window(command_window,game_window, map_row, map_col);	

@@ -300,4 +300,12 @@ void get_author_name_and_email(char fullString[],char author[], char email[]){
     email[i-(emailBegin)]='\0';
     author[emailBegin-1]='\0';
 }
-
+void initialize_map_array(int map_row,int map_col,char map[map_row][map_col]){
+    for (int i = 0; i < map_row; i++)
+    {
+        for (int j = 0; i < map_col; j++)
+        {
+            // map[i][j]=' ';
+        }
+    }
+}
