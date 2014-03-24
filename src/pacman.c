@@ -206,17 +206,14 @@ int main(int argc, char *argv[])
 								strcat(path,extension);
 
 								char map2[map_row][map_col];
-								// for (int i = 0; i < map_row; i++)
-							 //    {
-							 //    	printw("%d",i);
-							 //        for (int j = 0; i < map_col; j++)
-							 //        {
-							 //        	printw("%d",j);
-							 //           // map2[i][j]='.';
-							 //        }
-							 //    }
-							    refresh();
-							    map2[9][9]=' ';
+								for (int i = 0; i < map_row; i++)
+							    {
+							        for (int j = 0; j < map_col; j++)
+							        {
+							     	
+							           map2[i][j]=' ';
+							        }
+							    }
 								fp=fopen(path, "w");
 
 
