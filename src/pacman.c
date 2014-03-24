@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 								stop_command_window(command_window, game_window,map_row,map_col);
 							}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
 								if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
-									write_to_file(str_recieve[1], author, author_email, game_window,map_col, map_row);
+									write_to_file(str_recieve[1], author, author_email, game_window,map_col-1, map_row);
 									wprintw(command_window,"sucessfully write to ");
 									wprintw(command_window, str_recieve[1]);
 								}else {
