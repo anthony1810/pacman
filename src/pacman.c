@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 							}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
 								char s[100];
 								FILE *f ;
-							    char path[] = "../levels/";
+							    char path[] = "levels/";
 							    char extension[] =".pac";
 							    strcpy(map_name, str_recieve[1]);							    
 							    str_combine(path,str_recieve[1]);
@@ -194,46 +194,53 @@ int main(int argc, char *argv[])
 							    start_command_window(command_window, COMMAND_STARTY);
 							}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 								&& str_recieve[2] != NULL && str_recieve[3] != NULL){
+								if(atoi(str_recieve[2]) > 0 && atoi(str_recieve[2]) <= 35 && atoi(str_recieve[3]) > 0 && atoi(str_recieve[3]) <=65){
+									strcpy(map_name,str_recieve[1]);
+									map_row = atoi(str_recieve[2]);
+									map_col = atoi(str_recieve[3])+1;
 
-								strcpy(map_name,str_recieve[1]);
-								map_row = atoi(str_recieve[2]);
-								map_col = atoi(str_recieve[3])+1;
+									FILE *fp;
+									char path[100] = "../levels/";
+									char extension[100] =".pac";
+								 	strcat(path,map_name);
+									strcat(path,extension);
 
-								FILE *fp;
-								char path[100] = "../levels/";
-								char extension[100] =".pac";
-							 	strcat(path,map_name);
-								strcat(path,extension);
-
-								char map2[map_row][map_col];
-								for (int i = 0; i < map_row; i++)
-							    {
-							        for (int j = 0; j < map_col; j++)
-							        {
-							     	
-							           map2[i][j]=' ';
-							        }
-							    }
-								fp=fopen(path, "w");
+									char map2[map_row][map_col];
+									for (int i = 0; i < map_row; i++)
+								    {
+								    	//printw("%d",i);
+								        for (int j = 0; j < map_col; j++)
+								        {
+								        	//printw("%d",j);
+								           map2[i][j]=' ';
+								        }
+								    }
+								   // refresh();
+								   // map2[9][9]=' ';
+									fp=fopen(path, "w");
 
 
-								wprintw(command_window,"sucessfully create new file with row =");
-								wprintw(command_window, "%d",map_row);
-								wprintw(command_window," and col = ");
-								wprintw(command_window,"%d", map_col);
-								wrefresh(command_window);
-								wclear(game_window);
-							    
-							    // delwin(game_window);
-							    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x- map_col)/2);
-							    wmove(game_window,map_row-1,map_col-2);
-							    refresh();
-							    wrefresh(game_window);
-							    getch();
-								isEnter = 0;
-								stop_command_window(command_window,game_window, map_row, map_col);	
-							    cursorMove(game_window,map_row,map_col,map2);
-								
+									wprintw(command_window,"sucessfully create new file with row =");
+									wprintw(command_window, "%d",map_row);
+									wprintw(command_window," and col = ");
+									wprintw(command_window,"%d", map_col);
+									wrefresh(command_window);
+									wclear(game_window);
+								    
+								    // delwin(game_window);
+								    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x- map_col)/2);
+								    wmove(game_window,map_row-1,map_col-2);
+								    refresh();
+								    wrefresh(game_window);
+								    getch();
+									isEnter = 0;
+									stop_command_window(command_window,game_window, map_row, map_col);	
+								    cursorMove(game_window,map_row,map_col,map2);
+								}else{
+									wprintw(command_window,"map rows or cols is invalid");
+									wrefresh(command_window);
+									getch();
+								}
 								start_command_window(command_window, COMMAND_STARTY);
 
 							}else {

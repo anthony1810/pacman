@@ -19,7 +19,7 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char file_name[]){
     wclear(map_win);
     FILE *f ;
-    char path[] = "../levels/";
+    char path[] = "levels/";
     char extension[] =".pac";
     str_combine(path,file_name);
     str_combine(path,extension);
