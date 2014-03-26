@@ -4,6 +4,7 @@
 #include <string.h>
 #include "write_file.h"
 #include "constant.h"
+
 WINDOW *create_new_win(int height, int width, int starty, int startx)
 {	
 	WINDOW *local_win;
