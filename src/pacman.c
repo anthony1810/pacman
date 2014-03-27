@@ -48,6 +48,7 @@ int main(){
 	const char s[2] = " ";
 	while((ch = getch()) != 'q'){
 		if(ch == ':'){
+			curs_set(1);
 			wclear(command_window);
 			waddch(command_window, ':');
 			wrefresh(command_window);
@@ -61,10 +62,10 @@ int main(){
 				}else if(input == 10 && isEnter == 0){
 					isEnter = 1;
 					char commands[100] = "";
-						for(int k=0;k<10;k++){
+						for(int k=0;k<100;k++){
 							int characters = (int)mvwinch(command_window, 0, k);
 							char Str;												
-							if(characters!=58){
+							if(characters!=58 && characters!=4555){
 								sprintf(&Str, "%c", characters);
 								strcat(commands,&Str);
 							}
@@ -72,12 +73,14 @@ int main(){
 					// wclear(command_window);
 					// wprintw(command_window, "I recieved followings: ");
 					// wprintw(command_window, commands);
-					// wrefresh(command_window);
+					 //wrefresh(command_window);
 
-					if(strlen(commands)!=0){
+					if(strlen(commands)>0){
 						char *token;
 						char *str_recieve[4];
-										   
+						wprintw(command_window, "i'm in here with");
+						wprintw(command_window, commands);
+						wrefresh(command_window);		   
 						/* get the first token */
 						token = strtok(commands,s);
 						str_recieve[0] = token;
@@ -243,15 +246,15 @@ int main(){
 								stop_command_window(command_window,game_window, map_row, map_col);
 								isEnter = 0;
 						}
-					}	
+					}
 				}	
 			}
 			// wclear(command_window);
 			// wprintw(command_window, "Escape is pressed");
 			// wrefresh(command_window);
 			// getch();
-			stop_command_window(command_window,game_window, map_row, map_col);	
-			
+			stop_command_window(command_window,game_window, map_row, map_col);
+			//cursorMove(game_window,map_row,map_col,map);			
 		}
 	}
 	endwin();
@@ -317,7 +320,8 @@ void init_screen(){
 	for(i =0; i< col;i++){
 		mvprintw(40,i,"%s","-");
 	}
-
+	curs_set(0);
 	mvwprintw(command_window,0,0,"%s", " To enable command mode, type ':' ");
 	wrefresh(command_window);
+
 }
