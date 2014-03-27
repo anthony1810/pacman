@@ -105,21 +105,25 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
                 break;    
             case 'G':
             case 'g':
-                wattron(map_win,COLOR_PAIR(2));
+                wattron(map_win,COLOR_PAIR(3));
                 waddch(map_win,ACS_CKBOARD);
                 map[r][c]='G';
                 c++;
                 wattron(map_win,COLOR_PAIR(1));
                 break;
             case 's':
+                wattron(map_win,COLOR_PAIR(5));
                 waddch(map_win,ACS_BULLET);
                 map[r][c]='s';
                 c++;
+                wattron(map_win,COLOR_PAIR(1));
                 break;
             case 'S':
+                wattron(map_win,COLOR_PAIR(5));
                 waddch(map_win,ACS_DEGREE);
                 map[r][c]='S';
                 c++;
+                wattron(map_win,COLOR_PAIR(1));
                 break;  
 			case 'P':
             case 'p':
@@ -131,10 +135,17 @@ void readFile(WINDOW *map_win,int row,int col,char map[row][col], char s[],char 
 				break;
             case 'f':
             case 'F':
+                wattron(map_win,COLOR_PAIR(4));
                 waddch(map_win,ACS_STERLING);
                 map[r][c]='f';
                 c++;
+                wattron(map_win,COLOR_PAIR(1));
                 break;  
+            case ' ':
+                waddch(map_win,' ');
+                map[r][c]=' ';
+                c++;
+                break;
             case ':':
                 break;
         }
@@ -194,15 +205,19 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
                 break;    
             case 'G':
             case 'g':
-                wattron(map_win,COLOR_PAIR(2));
+                wattron(map_win,COLOR_PAIR(3));
                 waddch(map_win,ACS_CKBOARD);
                 wattron(map_win,COLOR_PAIR(1));                     
                 break;
             case 's':
+                wattron(map_win,COLOR_PAIR(5));
                 waddch(map_win,ACS_BULLET);
+                wattron(map_win,COLOR_PAIR(1));
                 break;
             case 'S':
+                wattron(map_win,COLOR_PAIR(5));
                 waddch(map_win,ACS_DEGREE);
+                wattron(map_win,COLOR_PAIR(1));
                 break;  
 			case 'P':
             case 'p':
@@ -212,10 +227,12 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
 				break;
             case 'f':
             case 'F':
+                wattron(map_win,COLOR_PAIR(4));
                 waddch(map_win,ACS_STERLING);
+                wattron(map_win,COLOR_PAIR(1));
                 break; 
             case ' ':
-                waddch(map_win,169);
+                waddch(map_win,' ');
                 break;
         	}
 
