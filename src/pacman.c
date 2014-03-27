@@ -61,7 +61,7 @@ int main(){
 					wrefresh(command_window);
 				}else if(input == 10 && isEnter == 0){
 					isEnter = 1;
-					char commands[100] = "";
+					char commands[110] = "";
 						for(int k=0;k<100;k++){
 							int characters = (int)mvwinch(command_window, 0, k);
 							char Str;												
