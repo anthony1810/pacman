@@ -39,7 +39,7 @@ int main(){
 	char author_email[50];
 	int map_row=0;
     int map_col=0;
-
+    
     int scr_x, scr_y;
     getmaxyx(stdscr, scr_y, scr_x);
 	
@@ -248,25 +248,45 @@ int main(){
 						}
 					}
 				}	
-			}
+			}//line 55
 			// wclear(command_window);
 			// wprintw(command_window, "Escape is pressed");
 			// wrefresh(command_window);
 			// getch();
 			stop_command_window(command_window,game_window, map_row, map_col);
-			//cursorMove(game_window,map_row,map_col,map);			
-		}
+			char map[map_row][map_col];
+			for(int i=0;i<map_row;i++){
+				for(int j=0;j<=map_col-1;j++){
+					if(j==map_col){
+						map[i][j]='\n';
+					}else{
+						int characters = (int)mvwinch(game_window, i, j);
+						map[i][j]=getTranslatedChar(characters);
+					}
+				}
+			}
+			wmove(game_window,map_row-1,map_col-2);
+			updateMap(game_window,map_row,map_col,map,getcury(game_window),getcurx(game_window));
+			refresh();
+			wrefresh(game_window);
+			cursorMove(game_window,map_row,map_col,map);			
+			start_command_window(command_window, COMMAND_STARTY);
+		}//line 50
 	}
 	endwin();
 	return 0;
 }
 
-
+/**
+ * @brief Use brief, otherwise the index won't have a brief explanation.
+ *
+ * Detailed explanation.
+ */
 void init_screen(){
 	initscr();	
 	int row,col;
 	getmaxyx(stdscr,row,col);
-	raw();				/* Line buffering disabled	*/
+	raw();			/**< Line buffering disabled	 */
 	keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
 	noecho();
 
@@ -275,6 +295,21 @@ void init_screen(){
 	char pellet[] = "pellet | ";
 	char super_pellet[] ="super pellet | ";
 	char fruit[] = "fruit";
+
+	if (has_colors()) {
+        start_color();
+        // in theory, you can change the value of the 8 predefined colors
+        // but it works only some times
+        //assert(init_color(COLOR_YELLOW, 200, 200, 1000) == OK);
+        // instead, you have to redefine the colors in the terminal
+
+        // initialise you colors pairs (foreground, background)
+        init_pair(1, COLOR_WALL,    COLOR_BACKGROUND);
+        init_pair(2, COLOR_PACMAN,  COLOR_BACKGROUND);
+		init_pair(3, COLOR_GHOST,  COLOR_BACKGROUND);
+		init_pair(4, COLOR_FRUIT,  COLOR_BACKGROUND);
+		init_pair(5, COLOR_PELLET,  COLOR_BACKGROUND);
+    }
 
 	int note_length = strlen(pacman) + strlen(ghost) + strlen(pellet) + strlen(super_pellet) + strlen(fruit) + 5;
 
@@ -323,5 +358,6 @@ void init_screen(){
 	curs_set(0);
 	mvwprintw(command_window,0,0,"%s", " To enable command mode, type ':' ");
 	wrefresh(command_window);
+	
 
 }
