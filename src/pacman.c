@@ -265,12 +265,13 @@ int main(){
 					}
 				}
 			}
+
 			wmove(game_window,map_row-1,map_col-2);
 			updateMap(game_window,map_row,map_col,map,getcury(game_window),getcurx(game_window));
 			refresh();
 			wrefresh(game_window);
 			cursorMove(game_window,map_row,map_col,map);			
-			start_command_window(command_window, COMMAND_STARTY);
+			// start_command_window(command_window, COMMAND_STARTY);
 		}//line 50
 	}
 	endwin();
