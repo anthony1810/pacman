@@ -59,7 +59,6 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 
 
 char getTranslatedChar(int ch){
-	// printw("%9d",ch);
 	//pacman
 	if(ch == 4194912){
 		return 'p';
@@ -109,7 +108,7 @@ char getTranslatedChar(int ch){
 		return 'a';
 	}
 	// pelet
-	else if(ch == 4194686){
+	else if(ch == 4195710){
 		return 's';
 	}
 	// power pellet
