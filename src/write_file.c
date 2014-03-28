@@ -48,6 +48,10 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 		for(k=0;k<width;k++){
 			int characters = (int)mvwinch(my_win, i, k);
 			fputc(getTranslatedChar(characters), fp);
+			if(i==1&&k==4){
+				// printf("%d\n",characters );
+				// wprintw(my_win,"%d",characters);
+			}
 		}
 		printw("\n");
 		fputc('\n', fp);
@@ -64,7 +68,7 @@ char getTranslatedChar(int ch){
 		return 'p';
 	}
 	//ghost
-	else if(ch == 4194913){
+	else if(ch == 4195169){
 		return 'g';
 	}
 	// upper left corner
@@ -112,11 +116,11 @@ char getTranslatedChar(int ch){
 		return 's';
 	}
 	// power pellet
-	else if(ch == 4194662){
+	else if(ch == 4195686){
 		return 'S';
 	}
 	// fruit
-	else if(ch == 4194685){
+	else if(ch == 4195453){
 		return 'f';
 	}
 	// space
