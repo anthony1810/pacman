@@ -326,21 +326,30 @@ void init_screen(){
 	mvwprintw(title_window,1,col/2 + strlen(TITLE)/2,"%s",VERSION);
 	mvwprintw(title_window,2,col/2 + strlen(TITLE)/2,"%s",CREATOR);
 
-
+	wattron(note_window,COLOR_PAIR(2));
 	waddch(note_window,ACS_DIAMOND);
 	wprintw(note_window,pacman);
-	
+	wattron(note_window,COLOR_PAIR(1));
+
+	wattron(note_window,COLOR_PAIR(3));
 	waddch(note_window, ACS_CKBOARD);
 	wprintw(note_window, ghost);
+	wattron(note_window,COLOR_PAIR(1));
 
+	wattron(note_window,COLOR_PAIR(5));
 	waddch(note_window, ACS_BULLET);
 	wprintw(note_window, pellet);
+	wattron(note_window,COLOR_PAIR(1));
 
+	wattron(note_window,COLOR_PAIR(5));
 	waddch(note_window, ACS_DEGREE);
 	wprintw(note_window, super_pellet);
+	wattron(note_window,COLOR_PAIR(1));
 
+	wattron(note_window,COLOR_PAIR(4));
 	waddch(note_window, ACS_STERLING);
 	wprintw(note_window, fruit);
+	wattron(note_window,COLOR_PAIR(1));
 	wrefresh(note_window);
 	int i;
 
