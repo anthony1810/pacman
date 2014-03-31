@@ -304,7 +304,9 @@ int main(){
 								wprintw(command_window, "Can't recognise that commands! type any key to continue!");
 								wrefresh(command_window);
 								getch();
-								stop_command_window(command_window,game_window, map_row, map_col);
+								//stop_command_window(command_window,game_window, map_row, map_col);
+								wclear(command_window);
+								waddch(command_window,':');
 								isEnter = 0;
 						}
 					}else {
@@ -315,7 +317,9 @@ int main(){
 								wprintw(command_window, "Can't recognise that commands! type any key to continue!");
 								wrefresh(command_window);
 								getch();
-								stop_command_window(command_window,game_window, map_row, map_col);
+								// stop_command_window(command_window,game_window, map_row, map_col);
+								wclear(command_window);
+								waddch(command_window,':');
 								isEnter = 0;
 						}
 				}	

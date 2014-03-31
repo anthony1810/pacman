@@ -26,4 +26,5 @@ ColorPalette9=#ffff5555ffff
 ColorForeground=#e49a65a30d43
 ColorSelectionUseDefault=FALSE
 ColorSelection=#000000000000
+FontName=Monospace 10
 
