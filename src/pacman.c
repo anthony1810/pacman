@@ -275,7 +275,6 @@ int main(){
 									wprintw(command_window," and col = ");
 									wprintw(command_window,"%d", map_col);
 									wattroff(command_window,COLOR_PAIR(8));	
-									//getch();
 									wrefresh(command_window);
 									wclear(game_window);
 								    stop_command_window(command_window,game_window, map_row, map_col);	
@@ -284,9 +283,7 @@ int main(){
 								    updateMap(game_window,map_row,map_col,map,getcury(game_window),getcurx(game_window));
 								    refresh();
 								    wrefresh(game_window);
-								    getch();
 								    cursorMove(game_window,map_row,map_col,map);
-								    continue;
 								}else{
 									wattron(command_window,COLOR_PAIR(7));
 									wprintw(command_window,str_error);
