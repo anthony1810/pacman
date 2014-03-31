@@ -33,7 +33,7 @@ const int GAME_HEIGHT = 35;
 const int GAME_STARTY = 6;
 
 const int COMMAND_HEIGHT = 3;
-const int COMMAND_STARTY = 41;
+const int COMMAND_STARTY = 42;
 char user[30] ="";
 char user_email[50]="";
 
@@ -495,10 +495,12 @@ void init_screen(){
 	wprintw(command_window,"\n");
 
 	for(i =0; i< col;i++){
-		mvprintw(40,i,"%s","-");
+		mvprintw(41,i,"%s","-");
 	}
 	curs_set(0);
+	wattron(command_window,COLOR_PAIR(6));
 	mvwprintw(command_window,0,0,"%s", "To enable command mode, type ':' ");
+	wattroff(command_window,COLOR_PAIR(6));
 	wrefresh(command_window);
 }
 void init_user_info(WINDOW* user_window,char user[], char user_email[], char map_name[], int map_row, int map_col, char author[], char author_email[]){
