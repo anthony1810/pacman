@@ -135,10 +135,10 @@ int main(){
 							wprintw(command_window," ! press any key to continue!");
 							wattroff(command_window,COLOR_PAIR(8));
 							wrefresh(command_window);			
-							
+							isEnter=0;
 							getch();
 							stop_command_window(command_window, game_window,map_row,map_col);
-							break;
+							start_command_window(command_window, COMMAND_STARTY);
 						}else if(strcmp(str_recieve[0],"w") == 0 && str_recieve[1] != NULL){
 							strcpy(map_name,str_recieve[1]);
 							if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
@@ -157,7 +157,8 @@ int main(){
 							wrefresh(command_window);
 							getch();
 							stop_command_window(command_window, game_window,map_row,map_col);	
-							
+							isEnter=0;
+							start_command_window(command_window, COMMAND_STARTY);
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]== NULL){
 							if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
 								write_to_file(map_name, author, author_email, game_window,map_col-1, map_row);
@@ -207,11 +208,12 @@ int main(){
 									wprintw(command_window, str_error);
 									wattroff(command_window,COLOR_PAIR(7));
 									wprintw(command_window, "File not found! type any key to continue!");
-									
-									
+									wrefresh(command_window);
+									getch();
+									wclear(command_window);
 									//mvprintw(COMMAND_STARTY,9,"%s", "Map not found, type ':' to return command mode");
-									stop_command_window(command_window, game_window,map_row,map_col);
-									continue;								
+									// stop_command_window(command_window, game_window,map_row,map_col);
+									start_command_window(command_window, COMMAND_STARTY);
 								}else{
 								    fgets(s, 100, f);
 								    get_author_name_and_email(s,author,author_email);
@@ -238,11 +240,11 @@ int main(){
 									wattroff(command_window,COLOR_PAIR(8));	
 									wrefresh(command_window);
 									getch();
-									isEnter = 0;
 									stop_command_window(command_window,game_window, map_row, map_col);	
 								    cursorMove(game_window,map_row,map_col,map);
 								    start_command_window(command_window, COMMAND_STARTY);
 								}
+								isEnter=0;
 						}else if(strcmp(str_recieve[0],"n") == 0 && str_recieve[1] != NULL 
 								&& str_recieve[2] != NULL && str_recieve[3] != NULL){
 								if(atoi(str_recieve[2]) > 0 && atoi(str_recieve[2]) <= 35 && atoi(str_recieve[3]) > 0 && atoi(str_recieve[3]) <=65){
@@ -283,7 +285,6 @@ int main(){
 								    refresh();
 								    wrefresh(game_window);
 								    getch();
-									isEnter = 0;
 								    cursorMove(game_window,map_row,map_col,map);
 								    continue;
 								}else{
@@ -295,6 +296,7 @@ int main(){
 									getch();
 									stop_command_window(command_window,game_window, map_row, map_col);	
 								}
+								isEnter=0;
 								start_command_window(command_window, COMMAND_STARTY);
 
 						}else{
@@ -346,6 +348,7 @@ int main(){
 			refresh();
 			wrefresh(game_window);
 			cursorMove(game_window,map_row,map_col,map);	
+			continue;
 			//continue;		
 			// start_command_window(command_window, COMMAND_STARTY);
 		}//line 50
