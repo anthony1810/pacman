@@ -1,7 +1,7 @@
 
 #ifndef CONSTANT_H
 #define CONSTANT_H
-#define PATH "../levels/"
+#define PATH "levels/"
 #define EXTENSION ".pac"
 #define COLOR_BACKGROUND 0
 #define COLOR_WALL       1

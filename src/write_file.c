@@ -128,14 +128,4 @@ char getTranslatedChar(int ch){
 		return 32;
 }
 
-void str_combine(char s1[], char s2[]){
-	char i,j;
-	for(i=0; s1[i]!='\0'; ++i);  /* i contains length of string s1. */
-    for(j=0; s2[j]!='\0'; ++j, ++i)
-    {
-        s1[i]=s2[j];
-    }
-    s1[i]='\0';
-    
-}
 
