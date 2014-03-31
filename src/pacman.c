@@ -13,11 +13,12 @@
 
 void init_screen();
 void init_file_window();
+void init_user_info(WINDOW* user_window,char user[], char user_email[], char map_name[], int map_row, int map_col, char author[], char author_email[]);
 WINDOW *title_window;
 WINDOW *game_window;
 WINDOW *command_window;
 WINDOW *note_window;
-WINDOW *file_window;
+WINDOW *wall;
 WINDOW *user_window;
 const char TITLE[] = "PACMAN EDITOR";
 const char VERSION[] = "@version 1.7.5";
@@ -227,7 +228,7 @@ int main(){
 								    //re-create game_window to fit the column and row
 								    wclear(game_window);
 								    wrefresh(game_window);
-								    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/2);
+								    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/3);
 								   	readFile(game_window,map_row,map_col,map,s,str_recieve[1]);
 								    fclose(f);
 								    wattron(command_window,COLOR_PAIR(8));	
@@ -239,6 +240,7 @@ int main(){
 									wprintw(command_window, ", press any key to edit..");
 									wattroff(command_window,COLOR_PAIR(8));	
 									wrefresh(command_window);
+									init_user_info(user_window,user, user_email, map_name,map_row,map_col-1,author,author_email);
 									getch();
 									stop_command_window(command_window,game_window, map_row, map_col);	
 								    cursorMove(game_window,map_row,map_col,map);
@@ -276,9 +278,10 @@ int main(){
 									wprintw(command_window,"%d", map_col);
 									wattroff(command_window,COLOR_PAIR(8));	
 									wrefresh(command_window);
+									init_user_info(user_window,user, user_email, map_name,map_row,map_col-1,author,author_email);
 									wclear(game_window);
 								    stop_command_window(command_window,game_window, map_row, map_col);	
-								    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/2);
+								    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/3);
 								    wmove(game_window,map_row-1,map_col-2);
 								    updateMap(game_window,map_row,map_col,map,getcury(game_window),getcurx(game_window));
 								    refresh();
@@ -382,7 +385,7 @@ void init_screen(){
 	attroff(COLOR_PAIR(5) | A_BOLD);
 	printw(".\n\n");
 	printw("Please Tell me your name (30 letters) and email (50 letters) so i can save new map under your\nidentity, Thank you! \n\n");
-	getch();
+	//getch();
 
     while(strlen(user) < 2 && strlen(user_email) < 2){
     	if(counter >= 1){
@@ -418,22 +421,23 @@ void init_screen(){
 
 
 	int note_length = strlen(pacman) + strlen(ghost) + strlen(pellet) + strlen(super_pellet) + strlen(fruit) + (strlen(sepChar)*5)+5;
-	char str_user[] = "User Name:";
-	char str_user_email[] = "User Email:";
 	
 	getmaxyx(stdscr,row,col);
 	title_window = create_new_win(TITLE_HEIGHT, col, 0, 0);
 	game_window = create_new_win(GAME_HEIGHT, GAME_WIDTH, GAME_STARTY, col/2);
 	command_window = create_new_win(COMMAND_HEIGHT, col, COMMAND_STARTY, 0);
 	note_window = create_new_win(TITLE_HEIGHT, col, 4, (col - note_length)/2);
-	int user_window_width = row - GAME_WIDTH;
-	int user_window_startY = 0;
-	user_window = create_new_win(10, user_window_width, TITLE_HEIGHT+5,user_window_startY) ;
-	//box(user_window, 1 , 1);
+	int user_window_width = 27;
+	int user_window_startY = TITLE_HEIGHT+3;
+	user_window = create_new_win(10, user_window_width, user_window_startY,1) ;
+	wall = create_new_win(GAME_HEIGHT+2,1,user_window_startY-2,user_window_width+2);
 	refresh();
 	wrefresh(user_window);
 
-	
+	for(int i=0;i<GAME_HEIGHT;i++){
+		mvwprintw(wall,i,0,"%s", "|");
+	}
+	wrefresh(wall);
 	wattron(title_window,A_BOLD);
 	wattron(title_window,COLOR_PAIR(6));
 	mvwprintw(title_window,0,(col-strlen(TITLE))/2,"%s",TITLE);
@@ -478,16 +482,7 @@ void init_screen(){
 	
 	wrefresh(note_window);
 
-	wprintw(user_window, "User Info\n");
-	wprintw(user_window, str_user);
-	wprintw(user_window, " ");
-	wprintw(user_window, user);
-	wprintw(user_window, "\n");
-	wprintw(user_window,str_user_email);
-	wprintw(user_window, " ");
-	wprintw(user_window, user_email);
-	wrefresh(user_window);
-
+	init_user_info(user_window,user, user_email, "",0,0,"","");
 	int i;
 
 	for(i =0; i< col;i++){
@@ -505,4 +500,62 @@ void init_screen(){
 	curs_set(0);
 	mvwprintw(command_window,0,0,"%s", "To enable command mode, type ':' ");
 	wrefresh(command_window);
+}
+void init_user_info(WINDOW* user_window,char user[], char user_email[], char map_name[], int map_row, int map_col, char author[], char author_email[]){
+	wclear(user_window);
+	wattron(user_window,A_BOLD | COLOR_PAIR(1) | A_UNDERLINE);
+	wprintw(user_window, "User Info\n");
+	wattroff(user_window,A_BOLD | COLOR_PAIR(1) | A_UNDERLINE);
+	wprintw(user_window, "User:");
+	wprintw(user_window, " ");
+	wattron(user_window,COLOR_PAIR(2));
+	wprintw(user_window, user);
+	wattroff(user_window,COLOR_PAIR(2));
+	wprintw(user_window, "\n");
+
+	wprintw(user_window,"Email:");
+	wprintw(user_window, " ");
+	wattron(user_window,COLOR_PAIR(2));
+	wprintw(user_window, user_email);
+	wattroff(user_window,COLOR_PAIR(2));
+
+
+	wprintw(user_window,"\n\n");
+	wattron(user_window,A_BOLD | COLOR_PAIR(1) | A_UNDERLINE);
+	wprintw(user_window, "Map Info\n");
+	wattroff(user_window,A_BOLD | COLOR_PAIR(1) | A_UNDERLINE);
+
+	wprintw(user_window, "Title:");
+	wprintw(user_window, " ");
+	wattron(user_window,COLOR_PAIR(2));
+	wprintw(user_window,map_name );
+	wattroff(user_window,COLOR_PAIR(2));
+	wprintw(user_window, "\n");
+
+	wprintw(user_window,"Creator:");
+	wprintw(user_window, " ");
+	wattron(user_window,COLOR_PAIR(2));
+	wprintw(user_window, author);
+	wattroff(user_window,COLOR_PAIR(2));
+	wprintw(user_window, "\n");
+
+	wprintw(user_window,"Email:");
+	wprintw(user_window, " ");
+	wattron(user_window,COLOR_PAIR(2));
+	wprintw(user_window, author_email);
+	wattroff(user_window,COLOR_PAIR(2));
+	wprintw(user_window, "\n");
+
+	wprintw(user_window,"Dimesion:");
+	wprintw(user_window, " ");
+	wattron(user_window,COLOR_PAIR(2));
+	wprintw(user_window,"%i" ,map_row);
+	wprintw(user_window,"x");
+	wprintw(user_window,"%i" ,map_col);
+	wattroff(user_window,COLOR_PAIR(2));
+	wprintw(user_window, "\n");
+
+	wrefresh(user_window);
+
+
 }
