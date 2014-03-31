@@ -36,27 +36,68 @@ const int COMMAND_HEIGHT = 3;
 const int COMMAND_STARTY = 42;
 char user[30] ="";
 char user_email[50]="";
-
-int main(){
+char path[100] = "";
+int isEnter=0;
+char author[50];
+char map_name[50];
+char author_email[50];
+int map_row=0;
+int map_col=0;    
+int scr_x, scr_y;
+FILE *f ;
+int main(int argc, char * argv[]){
 
 	init_screen();
-    int isEnter=0;
-	char author[50];
-	char map_name[50];
-	char author_email[50];
-	int map_row=0;
-    int map_col=0;
-    
-    int scr_x, scr_y;
+ 	curs_set(1);
     getmaxyx(stdscr, scr_y, scr_x);
 	
 	int ch;
 	int input;
 
-	if (has_colors()) {
-        start_color();
-		init_pair(7, 5, COLOR_BACKGROUND);
-		init_pair(8, COLOR_GREEN, COLOR_BACKGROUND);
+	 if(argc==2){
+        char s[100];
+        
+        strcpy(path,PATH);
+        strcat(path,argv[1]);
+        strcat(path,EXTENSION);     
+        f = fopen(path, "r");
+        if(!f){
+            wprintw(command_window,"%s", " ,File not found ");
+            wrefresh(command_window);
+        }else{ wclear(command_window);
+        	//giong y chang code luc read
+            fgets(s, 100, f);
+			get_author_name_and_email(s,author,author_email);
+			fgets(s, 100, f);
+			fgets(s, 100, f);
+			map_row=atoi(s);
+			fgets(s, 100, f);
+			map_col=atoi(s)+1;
+			char map[map_row][map_col];			
+			wclear(game_window);
+			wrefresh(game_window);
+			game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/3);
+			readFile(game_window,map_row,map_col,map,s,argv[1]);
+			fclose(f);
+			wattron(command_window,COLOR_PAIR(8));	
+			wprintw(command_window,"Sucessfully read from ");
+			wattron(command_window,A_UNDERLINE);	
+			wprintw(command_window, argv[1]);
+			wprintw(command_window,".pac");
+			wattroff(command_window,A_UNDERLINE);	
+			wprintw(command_window, ", press any key to edit..");
+			wattroff(command_window,COLOR_PAIR(8));	
+			wrefresh(command_window);
+			init_user_info(user_window,user, user_email, map_name,map_row,map_col-1,author,author_email);
+			cursorMove(game_window,map_row,map_col,map);
+
+			wclear(command_window);
+			wattron(command_window,COLOR_PAIR(6));
+			wprintw(command_window,"To enable command mode, type ':' ");
+			wattroff(command_window,COLOR_PAIR(6));
+			wrefresh(command_window);								    
+
+        }
     }
 
 
@@ -64,7 +105,6 @@ int main(){
 	const char s[2] = " ";
 	while((ch = getch()) != 'q'){
 		if(ch == ':'){
-			curs_set(1);
 			wclear(command_window);
 			waddch(command_window, ':');
 			wrefresh(command_window);
@@ -197,10 +237,8 @@ int main(){
 							return 0;
 						}else if(strcmp(str_recieve[0],"r") == 0 && str_recieve[1] != NULL){
 								char s[100];
-								FILE *f ;
-							    char path[100]="";
 							    strcpy(map_name,str_recieve[1]);
-							    strcat(path,PATH);
+							    strcpy(path,PATH);
 							    strcat(path,str_recieve[1]);
 							    strcat(path,EXTENSION);
 							    f = fopen(path, "r");
@@ -257,14 +295,14 @@ int main(){
 									map_col = atoi(str_recieve[3])+1;
 
 									//FILE *fp;
-									char path[100] = "levels/";
-									char extension[100] =".pac";
+									strcpy(path,PATH);
 								 	strcat(path,map_name);
-									strcat(path,extension);
+									strcat(path,EXTENSION);
 
 									char map[map_row][map_col];
 									initialize_map_array(map_row,map_col,map);
-
+									strcpy(author,user);
+									strcpy(author_email,user_email);
 									//write_to_file(map_name, "CaoAnh", "s3357672@rmit.edu.vn", game_window,map_col-1, map_row);
 									wattron(command_window,COLOR_PAIR(8));	
 									wprintw(command_window,"Sucessfully create a map called ");
@@ -373,6 +411,8 @@ void init_screen(){
 		init_pair(4, COLOR_FRUIT,  COLOR_BACKGROUND);
 		init_pair(5, COLOR_PELLET,  COLOR_BACKGROUND);
 		init_pair(6, COLOR_YELLOW, COLOR_BACKGROUND);
+		init_pair(7, 5, COLOR_BACKGROUND);
+		init_pair(8, COLOR_GREEN, COLOR_BACKGROUND);
     }
     int counter =0;
     printw("Welcome to");
