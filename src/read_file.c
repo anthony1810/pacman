@@ -6,8 +6,21 @@
 #include <string.h>
 #include "read_file.h"
 #include "constant.h"
-#include "utility.h"
+/*!
+ @brief create the new window with given width,height at specific position
+ @return the new window
+*/
+WINDOW *create_newwin(int height, int width, int starty, int startx)
+{	WINDOW *local_win;
 
+	local_win = newwin(height, width, starty, startx);
+	box(local_win, 0 , 0);		/* 0, 0 gives default characters 
+					 * for the vertical and horizontal
+					 * lines			*/
+	wrefresh(local_win);		/* Show that box 		*/
+
+	return local_win;
+}
 /*!
 @brief read the file and print it on screen
 @code
@@ -174,6 +187,7 @@ void updateMap(WINDOW *map_win,int row,int col,char map[row][col],int cursorY,in
 	wclear(map_win);
 	refresh();
     wrefresh(map_win);
+    wattron(map_win,COLOR_PAIR(1));
 	for(int i=0;i<row;i++){
 		for(int j=0;j<col;j++){
 			switch(map[i][j]){
@@ -362,5 +376,18 @@ void initialize_map_array(int map_row,int map_col,char map[map_row][map_col]){
             }
         }
     }
+    for(int j=0;j<map_col-2;j++){
+        map[0][j]='w';
+        map[map_row-1][j]='x';
+    }
+    for(int i=0;i<map_row;i++){
+        map[i][0]='a';
+        map[i][map_col-2]='a';
+    }
+
+    map[0][0]='q';
+    map[map_row-1][0]='z';
+    map[0][map_col-2]='e';
+    map[map_row-1][map_col-2]='c';
 }
 
