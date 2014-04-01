@@ -4,13 +4,8 @@
 #include <string.h>
 #include "write_file.h"
 #include "constant.h"
+//#include "utility.h"
 
-WINDOW *create_new_win(int height, int width, int starty, int startx)
-{	
-	WINDOW *local_win;
-	local_win = newwin(height, width, starty, startx);
-	return local_win;
-}
 	
 void write_to_file(char file_name[],char author_name[], char author_email[], WINDOW *my_win, int width, int height){
 	

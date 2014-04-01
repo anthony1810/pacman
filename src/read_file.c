@@ -6,21 +6,8 @@
 #include <string.h>
 #include "read_file.h"
 #include "constant.h"
-/*!
- @brief create the new window with given width,height at specific position
- @return the new window
-*/
-WINDOW *create_newwin(int height, int width, int starty, int startx)
-{	WINDOW *local_win;
+#include "utility.h"
 
-	local_win = newwin(height, width, starty, startx);
-	box(local_win, 0 , 0);		/* 0, 0 gives default characters 
-					 * for the vertical and horizontal
-					 * lines			*/
-	wrefresh(local_win);		/* Show that box 		*/
-
-	return local_win;
-}
 /*!
 @brief read the file and print it on screen
 @code
