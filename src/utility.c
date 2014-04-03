@@ -4,10 +4,10 @@
 #include <string.h>
 #include "constant.h"
 
-WINDOW *create_new_win(int height, int width, int starty, int startx)
+WINDOW create_new_win(int height, int width, int starty, int startx)
 {	
-	WINDOW *local_win;
-	local_win = newwin(height, width, starty, startx);
+	WINDOW local_win;
+	local_win = *newwin(height, width, starty, startx);
 	return local_win;
 
 }
@@ -23,6 +23,8 @@ void init_screen(WINDOW *title_window, WINDOW *game_window, WINDOW *command_wind
 		init_pair(4, COLOR_FRUIT,  COLOR_BACKGROUND);
 		init_pair(5, COLOR_PELLET,  COLOR_BACKGROUND);
 		init_pair(6, COLOR_YELLOW, COLOR_BACKGROUND);
+		init_pair(7, 5, COLOR_BACKGROUND);
+		init_pair(8, COLOR_GREEN, COLOR_BACKGROUND);
     }
     int counter =0;
     printw("Welcome to");
@@ -67,15 +69,14 @@ void init_screen(WINDOW *title_window, WINDOW *game_window, WINDOW *command_wind
 
 	int note_length = strlen(pacman) + strlen(ghost) + strlen(pellet) + strlen(super_pellet) + strlen(fruit) + (strlen(sepChar)*5)+5;
 	
-	getmaxyx(stdscr,row,col);
-	title_window = create_new_win(TITLE_HEIGHT, col, 0, 0);
-	game_window = create_new_win(GAME_HEIGHT, GAME_WIDTH, GAME_STARTY, col/2);
-	command_window = create_new_win(COMMAND_HEIGHT, col, COMMAND_STARTY, 0);
-	note_window = create_new_win(TITLE_HEIGHT, col, 4, (col - note_length)/2);
+	*title_window = create_new_win(TITLE_HEIGHT, col, 0, 0);
+	*game_window = create_new_win(GAME_HEIGHT, GAME_WIDTH, GAME_STARTY, col/2);
+	*command_window = create_new_win(COMMAND_HEIGHT, col, COMMAND_STARTY, 0);
+	*note_window = create_new_win(TITLE_HEIGHT, col, 4, (col - note_length)/2);
 	int user_window_width = 27;
 	int user_window_startY = TITLE_HEIGHT+3;
-	user_window = create_new_win(10, user_window_width, user_window_startY,1) ;
-	wall = create_new_win(GAME_HEIGHT+2,1,user_window_startY-2,user_window_width+2);
+	*user_window = create_new_win(10, user_window_width, user_window_startY,1) ;
+	*wall = create_new_win(GAME_HEIGHT+2,1,user_window_startY-2,user_window_width+2);
 	refresh();
 	wrefresh(user_window);
 

@@ -1,0 +1,57 @@
+\hypertarget{utility_8c}{\section{utility.\-c File Reference}
+\label{utility_8c}\index{utility.\-c@{utility.\-c}}
+}
+{\ttfamily \#include \char`\"{}utility.\-h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\-h$>$}\\*
+{\ttfamily \#include $<$string.\-h$>$}\\*
+{\ttfamily \#include \char`\"{}constant.\-h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+W\-I\-N\-D\-O\-W \hyperlink{utility_8c_a593aba180c6d9165dfc65cb31a561828}{create\-\_\-new\-\_\-win} (int height, int width, int starty, int startx)
+\item 
+void \hyperlink{utility_8c_acbb7a753dde41b018c71f591a68b6070}{init\-\_\-screen} (W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_a3a7742d2e1d3abf462930140718a3b9a}{title\-\_\-window}, W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_ab7e8df5037eda813f482880cd772e95f}{game\-\_\-window}, W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_a30b90320ea44ddd7351658fb4c92db91}{command\-\_\-window}, W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_a2521ae18240b16320b0957a9425fd835}{note\-\_\-window}, W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_af24bae5786b2af7d7d80947be3365e54}{wall}, W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_a9c62404bc89bc039be4061e6b0201fdd}{user\-\_\-window}, char \hyperlink{pacman_8c_a06c2206a2e6ed014bb3205cf1b6bd0a7}{user}\mbox{[}$\,$\mbox{]}, char \hyperlink{pacman_8c_ac3b1fede7dc162f1d3a6e3efd28a1b87}{user\-\_\-email}\mbox{[}$\,$\mbox{]})
+\item 
+void \hyperlink{utility_8c_a11b2e8780ec0b7ab2dbeb29899cc74cf}{init\-\_\-user\-\_\-info} (W\-I\-N\-D\-O\-W $\ast$\hyperlink{pacman_8c_a9c62404bc89bc039be4061e6b0201fdd}{user\-\_\-window}, char \hyperlink{pacman_8c_a06c2206a2e6ed014bb3205cf1b6bd0a7}{user}\mbox{[}$\,$\mbox{]}, char \hyperlink{pacman_8c_ac3b1fede7dc162f1d3a6e3efd28a1b87}{user\-\_\-email}\mbox{[}$\,$\mbox{]}, char \hyperlink{pacman_8c_a072788baae5ebbbc74fec33e8eccb7e7}{map\-\_\-name}\mbox{[}$\,$\mbox{]}, int \hyperlink{pacman_8c_adcaac76a96bc545b114cd51df846f2c8}{map\-\_\-row}, int \hyperlink{pacman_8c_aaaf34cffec6928dcdd46898e5a413e15}{map\-\_\-col}, char \hyperlink{pacman_8c_ad3125f739f1d8f5bbe8c6f3a030b96c0}{author}\mbox{[}$\,$\mbox{]}, char \hyperlink{pacman_8c_a396de8361779342a09b263537530b4c9}{author\-\_\-email}\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\hypertarget{utility_8c_a593aba180c6d9165dfc65cb31a561828}{\index{utility.\-c@{utility.\-c}!create\-\_\-new\-\_\-win@{create\-\_\-new\-\_\-win}}
+\index{create\-\_\-new\-\_\-win@{create\-\_\-new\-\_\-win}!utility.c@{utility.\-c}}
+\subsubsection[{create\-\_\-new\-\_\-win}]{\setlength{\rightskip}{0pt plus 5cm}W\-I\-N\-D\-O\-W create\-\_\-new\-\_\-win (
+\begin{DoxyParamCaption}
+\item[{int}]{height, }
+\item[{int}]{width, }
+\item[{int}]{starty, }
+\item[{int}]{startx}
+\end{DoxyParamCaption}
+)}}\label{utility_8c_a593aba180c6d9165dfc65cb31a561828}
+\hypertarget{utility_8c_acbb7a753dde41b018c71f591a68b6070}{\index{utility.\-c@{utility.\-c}!init\-\_\-screen@{init\-\_\-screen}}
+\index{init\-\_\-screen@{init\-\_\-screen}!utility.c@{utility.\-c}}
+\subsubsection[{init\-\_\-screen}]{\setlength{\rightskip}{0pt plus 5cm}void init\-\_\-screen (
+\begin{DoxyParamCaption}
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{title\-\_\-window, }
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{game\-\_\-window, }
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{command\-\_\-window, }
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{note\-\_\-window, }
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{wall, }
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{user\-\_\-window, }
+\item[{char}]{user\mbox{[}$\,$\mbox{]}, }
+\item[{char}]{user\-\_\-email\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{utility_8c_acbb7a753dde41b018c71f591a68b6070}
+$<$ Line buffering disabled \hypertarget{utility_8c_a11b2e8780ec0b7ab2dbeb29899cc74cf}{\index{utility.\-c@{utility.\-c}!init\-\_\-user\-\_\-info@{init\-\_\-user\-\_\-info}}
+\index{init\-\_\-user\-\_\-info@{init\-\_\-user\-\_\-info}!utility.c@{utility.\-c}}
+\subsubsection[{init\-\_\-user\-\_\-info}]{\setlength{\rightskip}{0pt plus 5cm}void init\-\_\-user\-\_\-info (
+\begin{DoxyParamCaption}
+\item[{W\-I\-N\-D\-O\-W $\ast$}]{user\-\_\-window, }
+\item[{char}]{user\mbox{[}$\,$\mbox{]}, }
+\item[{char}]{user\-\_\-email\mbox{[}$\,$\mbox{]}, }
+\item[{char}]{map\-\_\-name\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{map\-\_\-row, }
+\item[{int}]{map\-\_\-col, }
+\item[{char}]{author\mbox{[}$\,$\mbox{]}, }
+\item[{char}]{author\-\_\-email\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}\label{utility_8c_a11b2e8780ec0b7ab2dbeb29899cc74cf}
