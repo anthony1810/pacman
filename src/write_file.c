@@ -4,8 +4,11 @@
 #include <string.h>
 #include "write_file.h"
 #include "constant.h"
-//#include "utility.h"
 
+/*! @file write_file.c 
+	@brief this file provide functions to handle writing to text file.
+	@author Tran Nhat Quang <s3312399@rmit.edu.vn> 
+*/
 	
 void write_to_file(char file_name[],char author_name[], char author_email[], WINDOW *my_win, int width, int height){
 	
@@ -17,25 +20,24 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 	strcat(full_path,EXTENSION);
 	fp=fopen(full_path, "w");
 
-	//put name and email
+
 	fputs(author_name,fp);
 	fputs(" <",fp);
 	fputs(author_email, fp);
 	fputs(">",fp);
 	fputc('\n',fp);
 
-	//put file name
+
 	fputs(file_name,fp);
 	fputc('\n',fp);
 
-	//put rows
+
 	fprintf(fp, "%d", height);
 	fputc('\n',fp);
 
-	//put col
 	fprintf(fp, "%d", width);
 	fputc('\n',fp);
-	// fputs(,fp);
+
 	int i;
 	int k;
 
@@ -44,8 +46,6 @@ void write_to_file(char file_name[],char author_name[], char author_email[], WIN
 			int characters = (int)mvwinch(my_win, i, k);
 			fputc(getTranslatedChar(characters), fp);
 			if(i==1&&k==4){
-				// printf("%d\n",characters );
-				// wprintw(my_win,"%d",characters);
 			}
 		}
 		printw("\n");

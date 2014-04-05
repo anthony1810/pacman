@@ -2,11 +2,14 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H
 
- #define TITLE "PACMAN EDITOR"
+/*!
+	\file constant.h 
+	\brief this file contains all constant used in the whole program
+*/
+
+#define TITLE "PACMAN EDITOR"
 #define VERSION  "@version 1.7.5"
 #define CREATOR  "@created by THE THUNDER"
-
-
 
 #define TITLE_HEIGHT 3
 
@@ -34,6 +37,3 @@
 #define COLOR_PELLET 	 5
 
 #endif
- // strcat(path,PATH);
- // 								strcat(path,str_recieve[1]);
-	// 							strcat(path,EXTENSION);

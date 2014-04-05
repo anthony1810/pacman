@@ -1,8 +1,12 @@
 #include "utility.h"
 #include <stdlib.h>
-//#include <curses.h>
 #include <string.h>
 #include "constant.h"
+
+/*! \file utility.c
+	\brief this file contains some useful utilities for the main program and other modules of this program
+	\author Tran Nhat Quang <s3312399@rmit.edu.vn> 
+*/
 
 WINDOW create_new_win(int height, int width, int starty, int startx)
 {	

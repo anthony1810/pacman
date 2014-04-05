@@ -4,6 +4,12 @@
 #include <string.h>
 #include "write_file.h"
 #include "read_file.h"
+
+/*! \file command.c 
+	\brief this file provide functions to handle vi-commands style.
+	\author Tran Nhat Quang <s3312399@rmit.edu.vn> 
+*/
+
 void start_command_window(WINDOW *command_win,int y_cor){
 	wclear(command_win);
 	waddch(command_win, ':');

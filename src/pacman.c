@@ -10,12 +10,39 @@
 #include "constant.h"
 #include "utility.h"
 
-WINDOW title_window;
-WINDOW game_window;
-WINDOW command_window;
-WINDOW note_window;
-WINDOW wall;
-WINDOW user_window;
+
+/*!
+ *	@mainpage COSC2451 Pacman Editor
+ *	@author The Thunder Corp (Tran Nhat Quang <s3312399@rmit.edu.vn> - Huynh Phung Cao Anh <s3357672@rmit.edu.vn>)
+ *  @version 1.7.5
+ *
+ * \section intro_sec Introduction
+ * Pacman Level Editor Project was started since the very first day back when this Project had just been release by Dr. Denis Rinfret, We had Holding an ambition of creating a
+ * high quality and sophisticated program to outpass any other college teams.
+ *
+ * \section LICENSE 
+ *	This Program is freeware as long as quoting both author, you can modify it, publish it but the 
+ * copyright remains to The Thunder Corp.
+ *
+ * \section install_sec Installation
+ * \subsection step1 Step 1: Opening the project folder location with terminal
+ * \subsection step2 Step 2: typing make to compile sourcode
+ * \subsection step3 Step 3: type ./pacman.sh <map_name> or ./pacman.sh
+ * \subsection step4 Step 4: Enter your name and email as required
+ * \subsection step5 Step 5: type ':'' to enter command mode and 'esc' to quit command mode
+*/
+
+/*! \file pacman.c 
+	\brief this file is used to run all the seperate modules of this program and handle vi-command style
+	\author Tran Nhat Quang <s3312399@rmit.edu.vn> 
+*/
+
+WINDOW title_window; 	/* window to display title, version and company name */
+WINDOW game_window; 	/* window to display map game */
+WINDOW command_window; 	/*window to display command and recieve command */
+WINDOW note_window; 	/* window to explain special characters of the map */
+WINDOW wall; 			/* window to seperate game map and user info window */
+WINDOW user_window; 	/* window to display user info and map info */
 
 char user[30] ="";
 char user_email[50]="";
@@ -51,36 +78,8 @@ int main(int argc, char * argv[]){
         if(!f){
             wprintw(&command_window,"%s", " ,File not found ");
             wrefresh(&command_window);
-        }else{ wclear(&command_window);
-        	//giong y chang code luc read
-   //          fgets(s, 100, f);
-			// get_author_name_and_email(s,author,author_email);
-			// fgets(s, 100, f);
-			// fgets(s, 100, f);
-			// map_row=atoi(s);
-			// fgets(s, 100, f);
-			// map_col=atoi(s)+1;
-			// char map[map_row][map_col];			
-			// wclear(&game_window);
-			// wrefresh(&game_window);
-			// game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/3);
-			// readFile(&game_window,map_row,map_col,map,s,argv[1]);
-			// fclose(f);
-			// wattron(&command_window,COLOR_PAIR(8));	
-			// wprintw(&command_window,"Sucessfully read from ");
-			// wattron(&command_window,A_UNDERLINE);	
-			// wprintw(&command_window, argv[1]);
-			// wprintw(&command_window,".pac");
-			// wattroff(&command_window,A_UNDERLINE);	
-			// wprintw(&command_window, ", press any key to edit..");
-			// wattroff(&command_window,COLOR_PAIR(8));	
-			// wrefresh(&command_window);
-			// init_user_info(&user_window,user, user_email, map_name,map_row,map_col-1,author,author_email);
-			// cursorMove(&game_window,map_row,map_col,map);
-
-		
-			read_command(f,path,&command_window,&game_window,&user_window,&map_row,&map_col,map_name,author,author_email,
-                    user,user_email,scr_x);		
+        }else{ wclear(&command_window);		
+			read_command(f,path,&command_window,&game_window,&user_window,&map_row,&map_col,map_name,author,author_email,user,user_email,scr_x);		
 			wclear(&command_window);
 			wattron(&command_window,COLOR_PAIR(6));
 			wprintw(&command_window,"To enable command mode, type ':' ");
@@ -230,34 +229,6 @@ int main(int argc, char * argv[]){
 									wclear(&command_window);
 									start_command_window(&command_window, COMMAND_STARTY);
 								}else{
-								 //    fgets(s, 100, f);
-								 //    get_author_name_and_email(s,author,author_email);
-								 //    fgets(s, 100, f);
-								 //    fgets(s, 100, f);
-								 //    map_row=atoi(s);
-								 //    fgets(s, 100, f);
-								 //    map_col=atoi(s)+1;
-
-								 //    char map[map_row][map_col];
-								 //    //re-create &game_window to fit the column and row
-								 //    wclear(&game_window);
-								 //    wrefresh(&game_window);
-								 //    game_window=create_new_win(map_row,map_col,GAME_STARTY,(scr_x)/3);
-								 //   	readFile(&game_window,map_row,map_col,map,s,str_recieve[1]);
-								 //    fclose(f);
-								 //    wattron(&command_window,COLOR_PAIR(8));	
-								 //    wprintw(&command_window,"Sucessfully read from ");
-								 //    wattron(&command_window,A_UNDERLINE);	
-									// wprintw(&command_window, str_recieve[1]);
-									// wprintw(&command_window,".pac");
-									// wattroff(&command_window,A_UNDERLINE);	
-									// wprintw(&command_window, ", press any key to edit..");
-									// wattroff(&command_window,COLOR_PAIR(8));	
-									// wrefresh(&command_window);
-									// init_user_info(&user_window,user, user_email, map_name,map_row,map_col-1,author,author_email);
-									// getch();
-									// stop_command_window(&command_window,&game_window, map_row, map_col);	
-								 //    cursorMove(&game_window,map_row,map_col,map);
 									read_command(f,path,&command_window,&game_window,&user_window,&map_row,&map_col,map_name,author,author_email,
                     					user,user_email,scr_x);	
 									start_command_window(&command_window, COMMAND_STARTY);
@@ -337,11 +308,7 @@ int main(int argc, char * argv[]){
 								isEnter = 0;
 						}
 				}	
-			}//line 55
-			// wclear(&command_window);
-			// wprintw(&command_window, "Escape is pressed");
-			// wrefresh(&command_window);
-			// getch();
+			}
 			stop_command_window(&command_window,&game_window, map_row, map_col);
 			char map[map_row][map_col];
 			for(int i=0;i<map_row;i++){
