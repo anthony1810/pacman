@@ -1,6 +1,9 @@
 #ifndef READ_FILE_H
 #define READ_FILE_H
-/*
+/*! @file read_file.h 
+    @brief this is the header file of \ref read_file.c.
+*/
+/*!
 @brief readFile,get_author_name_and_email function will be called within.
 */
 void read_command(FILE *f,char path[],WINDOW *command_window,WINDOW * game_window,WINDOW *user_window,int *map_row,int *map_col,char map_name[],char author[],char author_email[],

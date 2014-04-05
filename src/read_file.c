@@ -7,6 +7,10 @@
 #include "read_file.h"
 #include "constant.h"
 #include "utility.h"
+/*! @file read_file.c 
+    @brief this file provide functions to handle reading from text file, modifying read text
+*/
+
 void read_command(FILE *f,char path[],WINDOW *command_window,WINDOW * game_window,WINDOW *user_window,int *map_row,int *map_col,char map_name[],char author[],char author_email[],
                     char user[],char user_email[],int scr_x){
             char s[100];

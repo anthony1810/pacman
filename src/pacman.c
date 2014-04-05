@@ -191,11 +191,13 @@ int main(int argc, char * argv[]){
 							wprintw(&command_window,".pac");
 							wattroff(&command_window,A_UNDERLINE);	
 							wprintw(&command_window," and will quit by typing any key");
+							wrefresh(&command_window);
 							getch();
 							wattroff(&command_window,COLOR_PAIR(8));	
 							endwin();
 							return 0;
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
+							strcpy(map_name,str_recieve[1]);
 							if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
 								write_to_file(map_name, author, author_email, &game_window,map_col-1, map_row);
 							}else if(strlen(map_name)>0 && strlen(user)>0 && strlen(user_email)>0){
@@ -327,6 +329,10 @@ int main(int argc, char * argv[]){
 			refresh();
 			wrefresh(&game_window);
 			cursorMove(&game_window,map_row,map_col,map);	
+			wattron(&command_window,COLOR_PAIR(6));
+			mvwprintw(&command_window,0,0,"%s", "To enable command mode, type ':' ");
+			wattroff(&command_window,COLOR_PAIR(6));
+			wrefresh(&command_window);
 			continue;
 		}
 	}
