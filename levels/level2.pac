@@ -21,11 +21,11 @@ a                assssa      ag              qwww          assssa
 a                assssa      zwwc            asss          aSsssa
 a        a       assssa                      asss          afsssa
 a        a          ssa                      asss          afsssa
-a   qwwwwD          ssa                      asssSSsssssssSafsssa
-a   afffSa          ssa                      AwwwwwwwwwwwwwDfsssa
+a   qwwwwD          ssa          f  f        asssSSsssssssSafsssa
+a   afffSa          ssa             f        AwwwwwwwwwwwwwDfsssa
 a   affffa          ssa                      asSssssssssssSafsssa
 aSsssssssassssssssffSsa                      assssssssssssfassssa
-affffffffasssssssSssssa                      a           sfassssa
+affffffffasssssssSssssa             p        a           sfassssa
 AwwwwwwwwXwwesssssffssa                      a         qwwwDssssa
 aSsssssssss asssssffssa                      a         asssassssa
 as        s asssssssssa    qwwwwwwwwwwwwwwwwwc         asssassssa

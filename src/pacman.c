@@ -18,7 +18,7 @@
  *
  * \section intro_sec Introduction
  * Pacman Level Editor Project was started since the very first day back when this Project had just been release by Dr. Denis Rinfret, We had Holding an ambition of creating a
- * high quality and sophisticated program to outpass any other college teams.
+ * high quality and sophisticated program to surpass any other college teams.
  *
  * \section LICENSE 
  *	This Program is freeware as long as quoting both author, you can modify it, publish it but the 
@@ -63,13 +63,13 @@ int main(int argc, char * argv[]){
 	wrefresh(&title_window);
 	wrefresh(&game_window);
 
-   	curs_set(1);
     getmaxyx(stdscr, scr_y, scr_x);
 	
 	int ch;
 	int input;
 
 	 if(argc==2){
+	 	curs_set(1);
         strcpy(path,PATH);
         strcat(path,argv[1]);
         strcat(path,EXTENSION);
@@ -93,6 +93,7 @@ int main(int argc, char * argv[]){
 	const char s[2] = " ";
 	while((ch = getch()) != 'q'){
 		if(ch == ':'){
+			curs_set(1);
 			wclear(&command_window);
 			waddch(&command_window, ':');
 			wrefresh(&command_window);
@@ -197,7 +198,7 @@ int main(int argc, char * argv[]){
 							endwin();
 							return 0;
 						}else if(strcmp(commands,"wq")==0 && str_recieve[1]!= NULL){
-							strcpy(map_name,str_recieve[1]);
+							strcpy(map_name, str_recieve[1]);
 							if(strlen(map_name)>0 && strlen(author)>0 && strlen(author_email)>0){
 								write_to_file(map_name, author, author_email, &game_window,map_col-1, map_row);
 							}else if(strlen(map_name)>0 && strlen(user)>0 && strlen(user_email)>0){
@@ -263,8 +264,7 @@ int main(int argc, char * argv[]){
 									wattroff(&command_window,A_UNDERLINE);	
 									wprintw(&command_window,"with row = ");
 									wprintw(&command_window, "%d",map_row);
-									wprintw(&command_window," and col = ");
-									wprintw(&command_window,"%d", map_col);
+									wprintw(&command_window,"%d", map_col-1);
 									wattroff(&command_window,COLOR_PAIR(8));	
 									wrefresh(&command_window);
 									init_user_info(&user_window,user, user_email, map_name,map_row,map_col-1,author,author_email);
@@ -292,7 +292,7 @@ int main(int argc, char * argv[]){
 								wattron(&command_window,COLOR_PAIR(7));
 								wprintw(&command_window,str_error);
 								wattroff(&command_window,COLOR_PAIR(7));
-								wprintw(&command_window, "Can't recognise that commands! type any key to continue!, upper");
+								wprintw(&command_window, "Can't recognise that commands! type any key to continue!");
 								wrefresh(&command_window);
 								wclear(&command_window);
 								waddch(&command_window,':');
@@ -303,7 +303,7 @@ int main(int argc, char * argv[]){
 								wattron(&command_window,COLOR_PAIR(7));
 								wprintw(&command_window,str_error);
 								wattroff(&command_window,COLOR_PAIR(7));
-								wprintw(&command_window, "Can't recognise that commands! type any key to continue!,down");
+								wprintw(&command_window, "Can't recognise that commands! type any key to continue!");
 								wrefresh(&command_window);
 								wclear(&command_window);
 								waddch(&command_window,':');
@@ -329,10 +329,6 @@ int main(int argc, char * argv[]){
 			refresh();
 			wrefresh(&game_window);
 			cursorMove(&game_window,map_row,map_col,map);	
-			wattron(&command_window,COLOR_PAIR(6));
-			mvwprintw(&command_window,0,0,"%s", "To enable command mode, type ':' ");
-			wattroff(&command_window,COLOR_PAIR(6));
-			wrefresh(&command_window);
 			continue;
 		}
 	}
